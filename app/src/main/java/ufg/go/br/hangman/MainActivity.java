@@ -1,5 +1,6 @@
 package ufg.go.br.hangman;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,12 +13,16 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import ufg.go.br.hangman.Util.SoundGame;
+
 public class MainActivity extends AppCompatActivity {
     TextView mWord;
+
     private final int LIMIT_OF_MISTAKES = 7;
     private String wordToBeGuessed = "Danillo".toUpperCase();
     private int mistakes = 0;
     private char[] guess;
+    SoundGame sg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +31,16 @@ public class MainActivity extends AppCompatActivity {
         mWord = findViewById(R.id.mWord);
         guess = getWordMasked();
         mWord.setText(String.valueOf(guess));
+        sg = new SoundGame(MainActivity.this);
+
+        //iniciar musica de fundo
+        sg.playMusicBehind();
     }
 
     public void letterPressed(View v) {
+        //Som do botão
+       sg.playMusicButton();
+
         final int id = v.getId();
         Button letterButton = findViewById(id);
         letterButton.setEnabled(false);
