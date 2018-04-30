@@ -107,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void newGame() {
+        WordsService service = new WordsService();
+        dataWordToBeGuessed = service.getNewWord("");
+        wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
+
         guess = getWordMasked();
         mWord.setText(String.valueOf(guess));
         mCategoryLabel.setText(category);
@@ -118,10 +122,6 @@ public class MainActivity extends AppCompatActivity {
         mMusicOffButton.setVisibility(View.GONE);
         sg.playMusicBehind();
         setHangDraw();
-
-        WordsService service = new WordsService();
-        dataWordToBeGuessed = service.getNewWord("");
-        wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
     }
 
     private char[] getWordMasked() {
