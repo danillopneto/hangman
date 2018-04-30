@@ -1,13 +1,18 @@
 package ufg.go.br.hangman;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private String wordToBeGuessed;
     private String normalizedWord;
     private String category;
+    ImageView mHangImage;
     TextView mWord;
     TextView mCategoryLabel;
     Button mNewGameButton;
+    LinearLayout mLettersContainer;
     ImageButton mMusicOnButton;
     ImageButton mMusicOffButton;
     SoundGame sg;
@@ -35,9 +42,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mHangImage = findViewById(R.id.mHangImage);
         mWord = findViewById(R.id.mWord);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mNewGameButton = findViewById(R.id.mNewGameButton);
+        mLettersContainer = findViewById(R.id.mLettersContainer);
         mMusicOnButton = findViewById(R.id.mMusicOnButton);
         mMusicOffButton = findViewById(R.id.mMusicOffButton);
 
@@ -67,10 +76,12 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             mistakes++;
+            setHangDraw();
         }
 
         if (mistakes >= LIMIT_OF_MISTAKES) {
             mNewGameButton.setVisibility(View.VISIBLE);
+            mLettersContainer.setVisibility(View.GONE);
         }
 
         letterButton.setBackgroundColor(Color.TRANSPARENT);
@@ -104,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         mMusicOnButton.setVisibility(View.VISIBLE);
         mMusicOffButton.setVisibility(View.GONE);
         sg.playMusicBehind();
+        setHangDraw();
     }
 
     private char[] getWordMasked() {
@@ -138,5 +150,37 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mWord.setText(String.valueOf(guess));
+    }
+
+    private void setHangDraw() {
+        int fileName;
+        switch (mistakes) {
+            case 1:
+                fileName = R.drawable.first;
+                break;
+            case 2:
+                fileName = R.drawable.second;
+                break;
+            case 3:
+                fileName = R.drawable.third;
+                break;
+            case 4:
+                fileName = R.drawable.fourth;
+                break;
+            case 5:
+                fileName = R.drawable.fifth;
+                break;
+            case 6:
+                fileName = R.drawable.sixth;
+                break;
+            case 7:
+                fileName = R.drawable.dead;
+                break;
+            default:
+                fileName = R.drawable.zero;
+        }
+
+        Drawable image = getDrawable(fileName);
+        mHangImage.setImageDrawable(image);
     }
 }
