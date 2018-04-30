@@ -1,27 +1,32 @@
 package ufg.go.br.hangman;
 
-import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
 import ufg.go.br.hangman.Util.SoundGame;
+import ufg.go.br.hangman.model.Word;
+import ufg.go.br.hangman.services.WordsService;
 
 public class MainActivity extends AppCompatActivity {
-    TextView mWord;
-
     private final int LIMIT_OF_MISTAKES = 7;
-    private String wordToBeGuessed = "Danillo".toUpperCase();
     private int mistakes = 0;
     private char[] guess;
+    private Word dataWordToBeGuessed;
+    private String wordToBeGuessed;
+    private String normalizedWord;
+    private String category;
+    TextView mWord;
+    TextView mCategoryLabel;
+    Button mNewGameButton;
     SoundGame sg;
 
     @Override
@@ -29,38 +34,61 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mWord = findViewById(R.id.mWord);
-        guess = getWordMasked();
-        mWord.setText(String.valueOf(guess));
-        sg = new SoundGame(MainActivity.this);
+        mCategoryLabel = findViewById(R.id.mCategoryLabel);
+        mNewGameButton = findViewById(R.id.mNewGameButton);
+        category = getIntent().getStringExtra("category");
+        if (category == null || category.equals("")) {
+            category = String.valueOf(getText(R.string.random));
+        }
 
-        //iniciar musica de fundo
-        sg.playMusicBehind();
+        newGame();
     }
 
     public void letterPressed(View v) {
         //Som do botão
-       sg.playMusicButton();
+        sg.playMusicButton();
 
         final int id = v.getId();
         Button letterButton = findViewById(id);
         letterButton.setEnabled(false);
         String letter = letterButton.getText().toString();
-        if (wordToBeGuessed.contains(letter)) {
+
+        if (normalizedWord.contains(letter)) {
             replaceCorrectLetter(letter.toCharArray()[0]);
             if (wordToBeGuessed.equals(String.valueOf(guess))) {
-                showMessage(R.id.you_won);
+                sg.stopMusichBehind();
+                mNewGameButton.setVisibility(View.VISIBLE);
             }
         } else {
             mistakes++;
         }
 
         if (mistakes >= LIMIT_OF_MISTAKES) {
-            showMessage(R.id.you_lose);
-            mWord.setText("");
+            sg.stopMusichBehind();
+            mNewGameButton.setVisibility(View.VISIBLE);
         }
     }
 
+    public void startNewGame(View v) {
+        recreate();
+    }
+
+    private void newGame() {
+        guess = getWordMasked();
+        mWord.setText(String.valueOf(guess));
+        mCategoryLabel.setText(category);
+        mNewGameButton.setVisibility(View.GONE);
+        sg = new SoundGame(MainActivity.this);
+
+        //iniciar musica de fundo
+        sg.playMusicBehind();
+    }
+
     private char[] getWordMasked() {
+        WordsService service = new WordsService();
+        dataWordToBeGuessed = service.getNewWord("");
+        wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
+        normalizedWord = getNormalizedWord(wordToBeGuessed);
         char[] word = new char[wordToBeGuessed.length()];
         for (int i = 0; i < wordToBeGuessed.length(); i++) {
             word[i] = '―';
@@ -69,25 +97,24 @@ public class MainActivity extends AppCompatActivity {
         return word;
     }
 
+    private String getNormalizedWord(String word) {
+        return Normalizer
+                .normalize(word, Normalizer.Form.NFD)
+                .replaceAll("[^\\p{ASCII}]", "");
+    }
+
     private void replaceCorrectLetter(char letter) {
         List<Integer> lettersFound = new ArrayList<>();
-        for (int i = 0; i < wordToBeGuessed.length(); i++) {
-            if (wordToBeGuessed.toCharArray()[i] == letter) {
+        for (int i = 0; i < normalizedWord.length(); i++) {
+            if (normalizedWord.toCharArray()[i] == letter) {
                 lettersFound.add(i);
             }
         }
 
         for (Integer index : lettersFound) {
-            guess[index] = letter;
+            guess[index] = wordToBeGuessed.toCharArray()[index];
         }
 
         mWord.setText(String.valueOf(guess));
-    }
-
-    private void showMessage(int idStringDescription) {
-        new MaterialDialog.Builder(this).title(R.string.title_message)
-                .content(idStringDescription)
-                .positiveText(R.string.label_ok)
-                .show();
     }
 }

@@ -2,4 +2,7 @@
     <string name="app_name">Hangman</string>
     <string name="label_ok">Ok</string>
     <string name="title_message">Info</string>
+    <string name="category">Categoria:</string>
+    <string name="new_game">Novo jogo</string>
+    <string name="random">Aleatório</string>
 </resources>

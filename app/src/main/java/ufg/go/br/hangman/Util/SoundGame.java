@@ -8,7 +8,7 @@ import ufg.go.br.hangman.R;
  */
 
 public class SoundGame {
-s
+
     MediaPlayer mp;
 
     Context context;
@@ -31,5 +31,7 @@ s
         mp.start();
     }
 
-
+    public void stopMusichBehind() {
+        mp.stop();
+    }
 }

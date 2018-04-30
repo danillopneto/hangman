@@ -5,16 +5,56 @@
     android:layout_width="wrap_content"
     android:padding="10dp">
 
+    <LinearLayout
+        android:id="@+id/containerHangman"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/hangmanImage"
+            android:layout_width="200dp"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/mCategoryLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/mNewGameButton"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_game"
+                android:onClick="startNewGame" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/mWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:letterSpacing="0.5"
         android:ems="10"
         android:textSize="32dp"
-        android:gravity="center_horizontal" />
+        android:gravity="center_horizontal"
+        android:layout_below="@+id/containerHangman"/>
 
     <LinearLayout
         android:id="@+id/firstContainer"
