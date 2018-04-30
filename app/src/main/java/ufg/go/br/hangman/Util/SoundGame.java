@@ -8,30 +8,30 @@ import ufg.go.br.hangman.R;
  */
 
 public class SoundGame {
-
-    MediaPlayer mp;
-
+    MediaPlayer mpBackground;
+    MediaPlayer mpButton;
     Context context;
 
     public SoundGame(Context ct){
         this.context = ct;
     }
 
-
-
     public void playMusicBehind(){
-        mp = MediaPlayer.create(context, R.raw.kalimba);
-        mp.start();
-        mp.setLooping(true);
+        mpBackground = MediaPlayer.create(context, R.raw.kalimba);
+        if (!mpBackground.isPlaying()) {
+            mpBackground.start();
+            mpBackground.setLooping(true);
+        }
     }
-
 
     public void playMusicButton(){
-        mp = MediaPlayer.create(context, R.raw.facebook);
-        mp.start();
+        mpButton = MediaPlayer.create(context, R.raw.facebook);
+        mpButton.start();
     }
 
-    public void stopMusichBehind() {
-        mp.stop();
+    public void stopMusicBehind() {
+        if (mpBackground != null) {
+            mpBackground.stop();
+        }
     }
 }

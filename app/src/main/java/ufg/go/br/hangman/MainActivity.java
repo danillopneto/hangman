@@ -1,12 +1,12 @@
 package ufg.go.br.hangman;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     TextView mWord;
     TextView mCategoryLabel;
     Button mNewGameButton;
+    ImageButton mMusicOnButton;
+    ImageButton mMusicOffButton;
     SoundGame sg;
 
     @Override
@@ -36,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         mWord = findViewById(R.id.mWord);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mNewGameButton = findViewById(R.id.mNewGameButton);
+        mMusicOnButton = findViewById(R.id.mMusicOnButton);
+        mMusicOffButton = findViewById(R.id.mMusicOffButton);
+
         category = getIntent().getStringExtra("category");
         if (category == null || category.equals("")) {
             category = String.valueOf(getText(R.string.random));
@@ -46,7 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void letterPressed(View v) {
         //Som do botão
-        sg.playMusicButton();
+        if (mMusicOnButton.getVisibility() == View.VISIBLE) {
+            sg.playMusicButton();
+        }
 
         final int id = v.getId();
         Button letterButton = findViewById(id);
@@ -56,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
         if (normalizedWord.contains(letter)) {
             replaceCorrectLetter(letter.toCharArray()[0]);
             if (wordToBeGuessed.equals(String.valueOf(guess))) {
-                sg.stopMusichBehind();
                 mNewGameButton.setVisibility(View.VISIBLE);
             }
         } else {
@@ -64,12 +70,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (mistakes >= LIMIT_OF_MISTAKES) {
-            sg.stopMusichBehind();
             mNewGameButton.setVisibility(View.VISIBLE);
         }
+
+        letterButton.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    public void setMusicOff(View v) {
+        sg.stopMusicBehind();
+        mMusicOffButton.setVisibility(View.VISIBLE);
+        mMusicOnButton.setVisibility(View.GONE);
+    }
+
+    public void setMusicOn(View v) {
+        sg.playMusicBehind();
+        mMusicOffButton.setVisibility(View.GONE);
+        mMusicOnButton.setVisibility(View.VISIBLE);
     }
 
     public void startNewGame(View v) {
+        sg.stopMusicBehind();
         recreate();
     }
 
@@ -81,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         sg = new SoundGame(MainActivity.this);
 
         //iniciar musica de fundo
+        mMusicOnButton.setVisibility(View.VISIBLE);
+        mMusicOffButton.setVisibility(View.GONE);
         sg.playMusicBehind();
     }
 
