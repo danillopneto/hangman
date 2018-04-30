@@ -13,9 +13,9 @@ public class WordsService {
     public WordsService() {
         _words = new ArrayList<>();
         _words.add(new Word("Animals", "CÃO", "DOG"));
-        _words.add(new Word("Animals", "GATO", "CAT"));
-        _words.add(new Word("Animals", "PEIXE", "FISH"));
-        _words.add(new Word("Animals", "PÁSSARO", "BIRD"));
+        _words.add(new Word("Animals", "DRAGÃO", "DRAGON"));
+        _words.add(new Word("Animals", "TAMANDUÁ", "ANTEATER"));
+        _words.add(new Word("Animals", "CARANGUEJO", "CRAB"));
         _words.add(new Word("Animals", "TARTARUGA", "TURTLE"));
         _words.add(new Word("Animals", "FORMIGA", "ANT"));
         _words.add(new Word("Animals", "BORBOLETA", "BUTTERFLY"));

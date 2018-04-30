@@ -16,6 +16,7 @@ import java.io.InputStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import ufg.go.br.hangman.Util.SoundGame;
 import ufg.go.br.hangman.model.Word;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
             replaceCorrectLetter(letter.toCharArray()[0]);
             if (wordToBeGuessed.equals(String.valueOf(guess))) {
                 mNewGameButton.setVisibility(View.VISIBLE);
+                mLettersContainer.setVisibility(View.GONE);
             }
         } else {
             mistakes++;
@@ -116,12 +118,13 @@ public class MainActivity extends AppCompatActivity {
         mMusicOffButton.setVisibility(View.GONE);
         sg.playMusicBehind();
         setHangDraw();
-    }
 
-    private char[] getWordMasked() {
         WordsService service = new WordsService();
         dataWordToBeGuessed = service.getNewWord("");
         wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
+    }
+
+    private char[] getWordMasked() {
         normalizedWord = getNormalizedWord(wordToBeGuessed);
         char[] word = new char[wordToBeGuessed.length()];
         for (int i = 0; i < wordToBeGuessed.length(); i++) {
