@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:padding="10dp">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:textSize="26dp"
+        android:textAlignment="center"
+        android:layout_margin="20dp"
+        android:id="@+id/textView" />
+
+
+    <LinearLayout
+        android:id="@+id/containerImagem"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/textView"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textCateg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/swap_imagem"
+            android:textSize="20dp" />
+
+
+        <ImageView
+            android:id="@+id/mHangImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="60dp"
+            app:srcCompat="@mipmap/ic_add_a_photo_black_24dp"
+            />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/mLettersContainer"
+        android:layout_below="@+id/containerImagem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_vertical|center_horizontal">
+
+        <Switch
+            android:id="@+id/switchsound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/sound"
+            android:textSize="20dp"
+            android:checked="true"/>
+
+
+        <Switch
+            android:id="@+id/switchvibrate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/vibrate"
+            android:textSize="20dp"
+            android:checked="true"/>
+
+        <Switch
+            android:id="@+id/switchreveal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="@string/reveal_word"
+            android:textSize="20dp"
+            android:checked="true"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
