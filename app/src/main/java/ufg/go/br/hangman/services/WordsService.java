@@ -27,6 +27,8 @@ public class WordsService {
         levels.add(new GameLevel("Fácil", 90));
         levels.add(new GameLevel("Normal", 60));
         levels.add(new GameLevel("Difícil", 30));
+        levels.add(new GameLevel("Muito difícil", 15));
+        levels.add(new GameLevel("Nível supremo", 5));
         return levels;
     }
 

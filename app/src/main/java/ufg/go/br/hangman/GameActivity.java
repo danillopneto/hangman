@@ -2,10 +2,12 @@ package ufg.go.br.hangman;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,6 +21,8 @@ import ufg.go.br.hangman.model.Word;
 
 public class GameActivity extends AppCompatActivity {
     private int mistakes = 0;
+    private int timeLimit;
+    private CountDownTimer countDownTimer;
     private char[] guess;
     private WordManager wordManager;
     private Word dataWordToBeGuessed;
@@ -33,6 +37,7 @@ public class GameActivity extends AppCompatActivity {
     ImageButton mMusicOnButton;
     ImageButton mMusicOffButton;
     SoundGame sg;
+    TextView mGameCountdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +51,13 @@ public class GameActivity extends AppCompatActivity {
         mLettersContainer = findViewById(R.id.mLettersContainer);
         mMusicOnButton = findViewById(R.id.mMusicOnButton);
         mMusicOffButton = findViewById(R.id.mMusicOffButton);
-
+        mGameCountdown = findViewById(R.id.mGameCountdown);
         category = getIntent().getStringExtra("category");
         if (category == null || category.equals("")) {
             category = String.valueOf(getText(R.string.random));
         }
 
+        timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
         mCategoryLabel.setText(category);
         newGame();
     }
@@ -79,7 +85,6 @@ public class GameActivity extends AppCompatActivity {
             mWord.setText(String.valueOf(guess));
         } else {
             mistakes++;
-            setHangDraw();
         }
 
         setEndGameLayout();
@@ -115,8 +120,24 @@ public class GameActivity extends AppCompatActivity {
         mMusicOnButton.setVisibility(View.VISIBLE);
         mMusicOffButton.setVisibility(View.GONE);
         sg.playMusicBehind();
-
         setHangDraw();
+
+        countDownTimer = new CountDownTimer(timeLimit * 1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                long seconds = millisUntilFinished / 1000;
+                mGameCountdown.setText("" + seconds);
+
+                if (seconds <= 5) {
+                    mGameCountdown.setTextColor(getResources().getColor(R.color.colorError));
+                }
+            }
+
+            public void onFinish() {
+                mistakes = wordManager.LIMIT_MISTAKES;
+                mGameCountdown.setVisibility(View.GONE);
+                setEndGameLayout();
+            }
+        }.start();
     }
 
     private void setEndGameLayout() {
@@ -124,6 +145,9 @@ public class GameActivity extends AppCompatActivity {
                 || mistakes >= wordManager.LIMIT_MISTAKES) {
             mNewGameButton.setVisibility(View.VISIBLE);
             mLettersContainer.setVisibility(View.GONE);
+            mGameCountdown.setVisibility(View.GONE);
+            countDownTimer.cancel();
+            setHangDraw();
         }
     }
 

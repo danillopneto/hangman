@@ -251,12 +251,24 @@
         </LinearLayout>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/mGameCountdown"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:padding="10dp"
+        android:textSize="20dp"
+        android:textColor="@color/colorText"
+        android:background="@drawable/roundedbutton"
+        android:text="00"/>
+
     <ImageButton
         android:id="@+id/mMusicOnButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         app:srcCompat="@drawable/ic_volume_up_black_24dp"
         android:onClick="setMusicOff"/>
 
@@ -265,8 +277,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         app:srcCompat="@drawable/ic_volume_off_black_24dp"
-        android:onClick="setMusicOn"/>
+        android:onClick="setMusicOn"
+        android:visibility="gone"/>
 
 </RelativeLayout>
