@@ -19,13 +19,14 @@ import java.util.List;
 import java.util.Locale;
 
 import ufg.go.br.hangman.Util.SoundGame;
+import ufg.go.br.hangman.Util.WordManager;
 import ufg.go.br.hangman.model.Word;
 import ufg.go.br.hangman.services.WordsService;
 
 public class MainActivity extends AppCompatActivity {
-    private final int LIMIT_OF_MISTAKES = 7;
     private int mistakes = 0;
     private char[] guess;
+    private WordManager wordManager;
     private Word dataWordToBeGuessed;
     private String wordToBeGuessed;
     private String normalizedWord;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        wordManager = new WordManager();
         mHangImage = findViewById(R.id.mHangImage);
         mWord = findViewById(R.id.mWord);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
@@ -56,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
             category = String.valueOf(getText(R.string.random));
         }
 
+        mCategoryLabel.setText(category);
         newGame();
     }
 
     public void letterPressed(View v) {
-        //Som do botão
         if (mMusicOnButton.getVisibility() == View.VISIBLE) {
             sg.playMusicButton();
         }
@@ -68,25 +70,19 @@ public class MainActivity extends AppCompatActivity {
         final int id = v.getId();
         Button letterButton = findViewById(id);
         letterButton.setEnabled(false);
-        String letter = letterButton.getText().toString();
+        letterButton.setBackgroundColor(Color.TRANSPARENT);
 
-        if (normalizedWord.contains(letter)) {
-            replaceCorrectLetter(letter.toCharArray()[0]);
-            if (wordToBeGuessed.equals(String.valueOf(guess))) {
-                mNewGameButton.setVisibility(View.VISIBLE);
-                mLettersContainer.setVisibility(View.GONE);
-            }
+        char letter = letterButton.getText().toString().toCharArray()[0];
+        List<Integer> positions = wordManager.getLetterPositions(normalizedWord, letter);
+        if (positions.size() > 0) {
+            guess = wordManager.replaceLetter(wordToBeGuessed, guess, positions);
+            mWord.setText(String.valueOf(guess));
         } else {
             mistakes++;
             setHangDraw();
         }
 
-        if (mistakes >= LIMIT_OF_MISTAKES) {
-            mNewGameButton.setVisibility(View.VISIBLE);
-            mLettersContainer.setVisibility(View.GONE);
-        }
-
-        letterButton.setBackgroundColor(Color.TRANSPARENT);
+        setEndGameLayout();
     }
 
     public void setMusicOff(View v) {
@@ -107,52 +103,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void newGame() {
-        WordsService service = new WordsService();
-        dataWordToBeGuessed = service.getNewWord("");
+        dataWordToBeGuessed = wordManager.getNewWord(category);
         wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
 
-        guess = getWordMasked();
+        normalizedWord = wordManager.getNormalizedWord(wordToBeGuessed);
+        guess = wordManager.getWordMasked(wordToBeGuessed);
         mWord.setText(String.valueOf(guess));
-        mCategoryLabel.setText(category);
         mNewGameButton.setVisibility(View.GONE);
-        sg = new SoundGame(MainActivity.this);
 
-        //iniciar musica de fundo
+        sg = new SoundGame(MainActivity.this);
         mMusicOnButton.setVisibility(View.VISIBLE);
         mMusicOffButton.setVisibility(View.GONE);
         sg.playMusicBehind();
+
         setHangDraw();
     }
 
-    private char[] getWordMasked() {
-        normalizedWord = getNormalizedWord(wordToBeGuessed);
-        char[] word = new char[wordToBeGuessed.length()];
-        for (int i = 0; i < wordToBeGuessed.length(); i++) {
-            word[i] = '―';
+    private void setEndGameLayout() {
+        if (wordToBeGuessed.equals(String.valueOf(guess))
+                || mistakes >= wordManager.LIMIT_MISTAKES) {
+            mNewGameButton.setVisibility(View.VISIBLE);
+            mLettersContainer.setVisibility(View.GONE);
         }
-
-        return word;
-    }
-
-    private String getNormalizedWord(String word) {
-        return Normalizer
-                .normalize(word, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "");
-    }
-
-    private void replaceCorrectLetter(char letter) {
-        List<Integer> lettersFound = new ArrayList<>();
-        for (int i = 0; i < normalizedWord.length(); i++) {
-            if (normalizedWord.toCharArray()[i] == letter) {
-                lettersFound.add(i);
-            }
-        }
-
-        for (Integer index : lettersFound) {
-            guess[index] = wordToBeGuessed.toCharArray()[index];
-        }
-
-        mWord.setText(String.valueOf(guess));
     }
 
     private void setHangDraw() {
