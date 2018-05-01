@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.model.Word;
 
 public class WordsService {
@@ -19,6 +20,14 @@ public class WordsService {
         _words.add(new Word("Animals", "TARTARUGA", "TURTLE"));
         _words.add(new Word("Animals", "FORMIGA", "ANT"));
         _words.add(new Word("Animals", "BORBOLETA", "BUTTERFLY"));
+    }
+
+    public List<GameLevel> getLevels() {
+        List<GameLevel> levels = new ArrayList<>();
+        levels.add(new GameLevel("Fácil", 90));
+        levels.add(new GameLevel("Normal", 60));
+        levels.add(new GameLevel("Difícil", 30));
+        return levels;
     }
 
     public Word getNewWord(final String category) {
