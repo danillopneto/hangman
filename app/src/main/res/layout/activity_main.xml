@@ -1,272 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="wrap_content"
-    android:padding="10dp">
-
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="2">
     <LinearLayout
-        android:id="@+id/containerHangman"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="200dp">
-
+        android:layout_weight="1">
         <ImageView
             android:id="@+id/mHangImage"
-            android:layout_width="200dp"
+            android:src="@drawable/main"
+            android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/category"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/mCategoryLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/mNewGameButton"
-                android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_game"
-                android:onClick="startNewGame" />
-
-        </LinearLayout>
-
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/mWord"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:letterSpacing="0.5"
-        android:ems="10"
-        android:textSize="32dp"
-        android:gravity="center_horizontal"
-        android:layout_below="@+id/containerHangman"/>
-
     <LinearLayout
-        android:id="@+id/mLettersContainer"
-        android:layout_below="@+id/mWord"
+        android:layout_below="@+id/mHangImage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center_vertical|center_horizontal">
-        <LinearLayout
-            android:id="@+id/firstContainer"
-            android:layout_below="@+id/mWord"
+        android:layout_alignParentBottom="true"
+        android:padding="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_weight="1">
+        <Button
+            android:id="@+id/mStartGameButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal">
-            <Button
-                android:id="@+id/mButtonA"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="A"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonB"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="B"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonC"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="C"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonD"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="D"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonE"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="E"
-                android:onClick="letterPressed"/>
-
-            <Button
-                android:id="@+id/mButtonF"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="F"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonG"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="G"
-                android:onClick="letterPressed"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/secondContainer"
+            android:text="@string/new_game"
+            android:onClick="startGame"
+            android:background="@drawable/roundedbutton"
+            android:textColor="@color/colorText" />
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/firstContainer"
-            android:gravity="center_vertical|center_horizontal">
-            <Button
-                android:id="@+id/mButtonH"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="H"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonI"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="I"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonJ"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="J"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonK"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="K"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonL"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="L"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonM"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="M"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonN"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="N"
-                android:onClick="letterPressed"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/thirdContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/secondContainer"
-            android:gravity="center_vertical|center_horizontal">
-            <Button
-                android:id="@+id/mButtonO"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="O"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonP"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="P"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonQ"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="Q"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonR"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="R"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonS"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="S"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonT"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="T"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonU"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="U"
-                android:onClick="letterPressed"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/thirdContainer"
-            android:gravity="center_vertical|center_horizontal">
-            <Button
-                android:id="@+id/mButtonV"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="V"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonW"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="W"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonX"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="X"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonY"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="Y"
-                android:onClick="letterPressed"/>
-            <Button
-                android:id="@+id/mButtonZ"
-                android:layout_width="35dp"
-                android:layout_height="44dp"
-                android:text="Z"
-                android:onClick="letterPressed"/>
-        </LinearLayout>
+            android:text="@string/settings"
+            android:onClick="showSettings"
+            android:background="@drawable/roundedbutton"
+            android:textColor="@color/colorText"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/mMusicOnButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_volume_up_black_24dp"
-        android:onClick="setMusicOff"/>
-
-    <ImageButton
-        android:id="@+id/mMusicOffButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_volume_off_black_24dp"
-        android:onClick="setMusicOn"/>
-
-</RelativeLayout>
+</LinearLayout>
