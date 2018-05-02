@@ -1,189 +1,137 @@
 package ufg.go.br.hangman;
 
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.Normalizer;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import ufg.go.br.hangman.Util.SoundGame;
-import ufg.go.br.hangman.model.Word;
+import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.services.WordsService;
 
 public class MainActivity extends AppCompatActivity {
-    private final int LIMIT_OF_MISTAKES = 7;
-    private int mistakes = 0;
-    private char[] guess;
-    private Word dataWordToBeGuessed;
-    private String wordToBeGuessed;
-    private String normalizedWord;
-    private String category;
-    ImageView mHangImage;
-    TextView mWord;
+    TextView mLanguageLabel;
     TextView mCategoryLabel;
-    Button mNewGameButton;
-    LinearLayout mLettersContainer;
-    ImageButton mMusicOnButton;
-    ImageButton mMusicOffButton;
-    SoundGame sg;
+    TextView mLevelLabel;
+    WordsService wordsService;
+    List<String> languages;
+    List<GameLevel> levels;
+    List<String> categories;
+    int selectedLanguage;
+    int selectedCategory;
+    int selectedLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mHangImage = findViewById(R.id.mHangImage);
-        mWord = findViewById(R.id.mWord);
-        mCategoryLabel = findViewById(R.id.mCategoryLabel);
-        mNewGameButton = findViewById(R.id.mNewGameButton);
-        mLettersContainer = findViewById(R.id.mLettersContainer);
-        mMusicOnButton = findViewById(R.id.mMusicOnButton);
-        mMusicOffButton = findViewById(R.id.mMusicOffButton);
-
-        category = getIntent().getStringExtra("category");
-        if (category == null || category.equals("")) {
-            category = String.valueOf(getText(R.string.random));
-        }
-
-        newGame();
+        setStartValues();
     }
 
-    public void letterPressed(View v) {
-        //Som do botão
-        if (mMusicOnButton.getVisibility() == View.VISIBLE) {
-            sg.playMusicButton();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.mSettingButton) {
+            showSettings();
         }
 
-        final int id = v.getId();
-        Button letterButton = findViewById(id);
-        letterButton.setEnabled(false);
-        String letter = letterButton.getText().toString();
+        return super.onOptionsItemSelected(item);
+    }
 
-        if (normalizedWord.contains(letter)) {
-            replaceCorrectLetter(letter.toCharArray()[0]);
-            if (wordToBeGuessed.equals(String.valueOf(guess))) {
-                mNewGameButton.setVisibility(View.VISIBLE);
-                mLettersContainer.setVisibility(View.GONE);
-            }
+    public void nextCategory(View v) {
+        if (selectedCategory == categories.size() - 1) {
+            selectedCategory = 0;
         } else {
-            mistakes++;
-            setHangDraw();
+            selectedCategory++;
         }
 
-        if (mistakes >= LIMIT_OF_MISTAKES) {
-            mNewGameButton.setVisibility(View.VISIBLE);
-            mLettersContainer.setVisibility(View.GONE);
+        mCategoryLabel.setText(categories.get(selectedCategory));
+    }
+
+    public void nextLanguage(View v) {
+        if (selectedLanguage == languages.size() - 1) {
+            selectedLanguage = 0;
+        } else {
+            selectedLanguage++;
         }
 
-        letterButton.setBackgroundColor(Color.TRANSPARENT);
+        mLanguageLabel.setText(languages.get(selectedLanguage));
     }
 
-    public void setMusicOff(View v) {
-        sg.stopMusicBehind();
-        mMusicOffButton.setVisibility(View.VISIBLE);
-        mMusicOnButton.setVisibility(View.GONE);
-    }
-
-    public void setMusicOn(View v) {
-        sg.playMusicBehind();
-        mMusicOffButton.setVisibility(View.GONE);
-        mMusicOnButton.setVisibility(View.VISIBLE);
-    }
-
-    public void startNewGame(View v) {
-        sg.stopMusicBehind();
-        recreate();
-    }
-
-    private void newGame() {
-        WordsService service = new WordsService();
-        dataWordToBeGuessed = service.getNewWord("");
-        wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
-
-        guess = getWordMasked();
-        mWord.setText(String.valueOf(guess));
-        mCategoryLabel.setText(category);
-        mNewGameButton.setVisibility(View.GONE);
-        sg = new SoundGame(MainActivity.this);
-
-        //iniciar musica de fundo
-        mMusicOnButton.setVisibility(View.VISIBLE);
-        mMusicOffButton.setVisibility(View.GONE);
-        sg.playMusicBehind();
-        setHangDraw();
-    }
-
-    private char[] getWordMasked() {
-        normalizedWord = getNormalizedWord(wordToBeGuessed);
-        char[] word = new char[wordToBeGuessed.length()];
-        for (int i = 0; i < wordToBeGuessed.length(); i++) {
-            word[i] = '―';
+    public void nextLevel(View v) {
+        if (selectedLevel == levels.size() - 1) {
+            selectedLevel = 0;
+        } else {
+            selectedLevel++;
         }
 
-        return word;
+        mLevelLabel.setText(levels.get(selectedLevel).getName());
     }
 
-    private String getNormalizedWord(String word) {
-        return Normalizer
-                .normalize(word, Normalizer.Form.NFD)
-                .replaceAll("[^\\p{ASCII}]", "");
+    public void previousCategory(View v) {
+        if (selectedCategory == 0) {
+            selectedCategory = categories.size() - 1;
+        } else {
+            selectedCategory--;
+        }
+
+        mCategoryLabel.setText(categories.get(selectedLevel));
     }
 
-    private void replaceCorrectLetter(char letter) {
-        List<Integer> lettersFound = new ArrayList<>();
-        for (int i = 0; i < normalizedWord.length(); i++) {
-            if (normalizedWord.toCharArray()[i] == letter) {
-                lettersFound.add(i);
-            }
+    public void previousLanguage(View v) {
+        if (selectedLanguage == 0) {
+            selectedLanguage = languages.size() - 1;
+        } else {
+            selectedLanguage--;
         }
 
-        for (Integer index : lettersFound) {
-            guess[index] = wordToBeGuessed.toCharArray()[index];
-        }
-
-        mWord.setText(String.valueOf(guess));
+        mLanguageLabel.setText(languages.get(selectedLanguage));
     }
 
-    private void setHangDraw() {
-        int fileName;
-        switch (mistakes) {
-            case 1:
-                fileName = R.drawable.first;
-                break;
-            case 2:
-                fileName = R.drawable.second;
-                break;
-            case 3:
-                fileName = R.drawable.third;
-                break;
-            case 4:
-                fileName = R.drawable.fourth;
-                break;
-            case 5:
-                fileName = R.drawable.fifth;
-                break;
-            case 6:
-                fileName = R.drawable.sixth;
-                break;
-            case 7:
-                fileName = R.drawable.dead;
-                break;
-            default:
-                fileName = R.drawable.zero;
+    public void previousLevel(View v) {
+        if (selectedLevel == 0) {
+            selectedLevel = levels.size() - 1;
+        } else {
+            selectedLevel--;
         }
 
-        Drawable image = getDrawable(fileName);
-        mHangImage.setImageDrawable(image);
+        mLevelLabel.setText(levels.get(selectedLevel).getName());
+    }
+
+    public void startGame(View v) {
+        Intent i = new Intent(this, GameActivity.class);
+        i.putExtra(getString(R.string.language), languages.get(selectedLanguage));
+        i.putExtra(getString(R.string.category), categories.get(selectedCategory));
+        i.putExtra(getString(R.string.total_time), levels.get(selectedLevel).getTime());
+        startActivity(i);
+    }
+
+    public void showSettings() {
+        Intent i = new Intent(this, SettingsActivity.class);
+        startActivity(i);
+    }
+
+    private void setStartValues() {
+        mLanguageLabel = findViewById(R.id.mLanguageLabel);
+        mCategoryLabel = findViewById(R.id.mCategoryLabel);
+        mLevelLabel = findViewById(R.id.mLevelLabel);
+        wordsService = new WordsService();
+        languages = wordsService.getLanguages();
+        levels = wordsService.getLevels();
+        categories = wordsService.getCategories();
+
+        selectedLanguage = 0;
+        mLanguageLabel.setText(languages.get(selectedLanguage));
+        selectedCategory = 0;
+        mCategoryLabel.setText(categories.get(selectedCategory));
+        selectedLevel = 0;
+        mLevelLabel.setText(levels.get(selectedLevel).getName());
     }
 }
