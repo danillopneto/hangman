@@ -62,13 +62,5 @@
             android:onClick="startGame"
             android:background="@drawable/roundedbutton"
             android:textColor="@color/colorText" />
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/settings"
-            android:onClick="showSettings"
-            android:background="@drawable/roundedbutton"
-            android:textColor="@color/colorText"
-            android:layout_marginTop="10dp" />
     </LinearLayout>
 </LinearLayout>

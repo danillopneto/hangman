@@ -84,6 +84,7 @@ public class GameActivity extends AppCompatActivity {
             mWord.setText(String.valueOf(guess));
         } else {
             mistakes++;
+            setHangDraw();
         }
 
         setEndGameLayout();
