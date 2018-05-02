@@ -1,14 +1,14 @@
 package ufg.go.br.hangman.model;
 
+import java.util.HashMap;
+
 public class Word {
     private String category;
-    private String portuguese;
-    private String english;
+    private HashMap<String, String> word;
 
-    public Word(String category, String portuguese, String english) {
+    public Word(String category, HashMap<String, String> word) {
         this.category = category;
-        this.portuguese = portuguese;
-        this.english = english;
+        this.word = word;
     }
 
     public String getCategory() {
@@ -19,19 +19,11 @@ public class Word {
         this.category = category;
     }
 
-    public String getPortuguese() {
-        return portuguese;
+    public HashMap<String, String> getWord() {
+        return word;
     }
 
-    public void setPortuguese(String portuguese) {
-        this.portuguese = portuguese;
-    }
-
-    public String getEnglish() {
-        return english;
-    }
-
-    public void setEnglish(String english) {
-        this.english = english;
+    public void setWord(HashMap<String, String> word) {
+        this.word = word;
     }
 }

@@ -21,13 +21,16 @@ import ufg.go.br.hangman.model.Word;
 public class GameActivity extends AppCompatActivity {
     private int mistakes = 0;
     private int timeLimit;
+    private String language;
+    private String category;
+
     private CountDownTimer countDownTimer;
     private char[] guess;
     private WordManager wordManager;
     private Word dataWordToBeGuessed;
     private String wordToBeGuessed;
     private String normalizedWord;
-    private String category;
+
     ImageView mHangImage;
     TextView mWord;
     TextView mCategoryLabel;
@@ -94,8 +97,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void newGame() {
         dataWordToBeGuessed = wordManager.getNewWord(category);
-        wordToBeGuessed = dataWordToBeGuessed.getPortuguese();
-
+        wordToBeGuessed = dataWordToBeGuessed.getWord().get(language);
         normalizedWord = wordManager.getNormalizedWord(wordToBeGuessed);
         guess = wordManager.getWordMasked(wordToBeGuessed);
         mWord.setText(String.valueOf(guess));
@@ -132,6 +134,7 @@ public class GameActivity extends AppCompatActivity {
             mLettersContainer.setVisibility(View.GONE);
             mGameCountdown.setVisibility(View.GONE);
             countDownTimer.cancel();
+            sg.stopMusicBehind();
             setHangDraw();
         }
     }
@@ -179,6 +182,7 @@ public class GameActivity extends AppCompatActivity {
         mMusicOffButton = findViewById(R.id.mMusicOffButton);
         mGameCountdown = findViewById(R.id.mGameCountdown);
 
+        language = getIntent().getStringExtra(getString(R.string.language));
         category = getIntent().getStringExtra(getString(R.string.category));
         timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
         mCategoryLabel.setText(category);

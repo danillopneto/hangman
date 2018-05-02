@@ -5,6 +5,7 @@ import org.apache.commons.collections4.Predicate;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -13,20 +14,22 @@ import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.model.Word;
 
 public class WordsService {
+    private final String PORTUGUESE = "Português";
+    private final String ENGLISH = "Inglês";
     private List<Word> _words;
 
     public WordsService() {
         _words = new ArrayList<>();
-        _words.add(new Word("Animals", "CÃO", "DOG"));
-        _words.add(new Word("Comida", "SORVETE", "ICECREAM"));
-        _words.add(new Word("Corpo", "PESCOÇO", "NECK"));
-        _words.add(new Word("Cozinha", "COLHER", "SPOON"));
-        _words.add(new Word("Educação", "LIVRO", "BOOK"));
-        _words.add(new Word("Esportes", "LUVA", "GLOVE"));
-        _words.add(new Word("Países", "IRLANDA", "IRELAND"));
-        _words.add(new Word("Profissões", "PROGRAMADOR", "PROGRAMMER"));
-        _words.add(new Word("Roupas", "SAIA", "SKIRT"));
-        _words.add(new Word("Transporte", "ÔNIBUS", "BUS"));
+        _words.add(new Word("Animals",  createWord(PORTUGUESE,"CÃO", ENGLISH, "DOG")));
+        _words.add(new Word("Comida",  createWord(PORTUGUESE,"SORVETE", ENGLISH, "ICECREAM")));
+        _words.add(new Word("Corpo",  createWord(PORTUGUESE,"PESCOÇO", ENGLISH, "NECK")));
+        _words.add(new Word("Cozinha",  createWord(PORTUGUESE,"COLHER", ENGLISH, "SPOON")));
+        _words.add(new Word("Educação",  createWord(PORTUGUESE,"LIVRO", ENGLISH, "BOOK")));
+        _words.add(new Word("Esportes",  createWord(PORTUGUESE,"LUVA", ENGLISH, "GLOVE")));
+        _words.add(new Word("Países",  createWord(PORTUGUESE,"IRLANDA", ENGLISH, "IRELAND")));
+        _words.add(new Word("Profissões",  createWord(PORTUGUESE,"PROGRAMADOR", ENGLISH, "PROGRAMMER")));
+        _words.add(new Word("Roupas",  createWord(PORTUGUESE,"SAIA", ENGLISH, "SKIRT")));
+        _words.add(new Word("Transporte",  createWord(PORTUGUESE,"ÔNIBUS", ENGLISH, "BUS")));
     }
 
     public List<String> getCategories() {
@@ -42,6 +45,13 @@ public class WordsService {
         categories.add("Roupas");
         categories.add("Transporte");
         return categories;
+    }
+
+    public List<String> getLanguages() {
+        List<String> languages = new ArrayList<>();
+        languages.add(PORTUGUESE);
+        languages.add(ENGLISH);
+        return languages;
     }
 
     public List<GameLevel> getLevels() {
@@ -74,5 +84,14 @@ public class WordsService {
         }
 
         return words.get(0);
+    }
+
+    private HashMap<String, String> createWord(String... languageOrWordInSequence) {
+        HashMap<String, String> words = new HashMap<>();
+        for (int i = 0; i < languageOrWordInSequence.length; i = i + 2) {
+            words.put(languageOrWordInSequence[i], languageOrWordInSequence[i + 1]);
+        }
+
+        return words;
     }
 }

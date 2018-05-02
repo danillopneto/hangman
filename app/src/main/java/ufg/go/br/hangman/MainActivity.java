@@ -12,19 +12,21 @@ import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.services.WordsService;
 
 public class MainActivity extends AppCompatActivity {
+    TextView mLanguageLabel;
     TextView mCategoryLabel;
     TextView mLevelLabel;
     WordsService wordsService;
+    List<String> languages;
     List<GameLevel> levels;
     List<String> categories;
-    int levelSelected;
-    int categorySelected;
+    int selectedLanguage;
+    int selectedCategory;
+    int selectedLevel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setStartValues();
     }
 
@@ -44,49 +46,70 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextCategory(View v) {
-        if (categorySelected == categories.size() - 1) {
-            categorySelected = 0;
+        if (selectedCategory == categories.size() - 1) {
+            selectedCategory = 0;
         } else {
-            categorySelected++;
+            selectedCategory++;
         }
 
-        mCategoryLabel.setText(categories.get(categorySelected));
+        mCategoryLabel.setText(categories.get(selectedCategory));
+    }
+
+    public void nextLanguage(View v) {
+        if (selectedLanguage == languages.size() - 1) {
+            selectedLanguage = 0;
+        } else {
+            selectedLanguage++;
+        }
+
+        mLanguageLabel.setText(languages.get(selectedLanguage));
     }
 
     public void nextLevel(View v) {
-        if (levelSelected == levels.size() - 1) {
-            levelSelected = 0;
+        if (selectedLevel == levels.size() - 1) {
+            selectedLevel = 0;
         } else {
-            levelSelected++;
+            selectedLevel++;
         }
 
-        mLevelLabel.setText(levels.get(levelSelected).getName());
+        mLevelLabel.setText(levels.get(selectedLevel).getName());
     }
 
     public void previousCategory(View v) {
-        if (categorySelected == 0) {
-            categorySelected = categories.size() - 1;
+        if (selectedCategory == 0) {
+            selectedCategory = categories.size() - 1;
         } else {
-            categorySelected--;
+            selectedCategory--;
         }
 
-        mCategoryLabel.setText(categories.get(levelSelected));
+        mCategoryLabel.setText(categories.get(selectedLevel));
+    }
+
+    public void previousLanguage(View v) {
+        if (selectedLanguage == 0) {
+            selectedLanguage = languages.size() - 1;
+        } else {
+            selectedLanguage--;
+        }
+
+        mLanguageLabel.setText(languages.get(selectedLanguage));
     }
 
     public void previousLevel(View v) {
-        if (levelSelected == 0) {
-            levelSelected = levels.size() - 1;
+        if (selectedLevel == 0) {
+            selectedLevel = levels.size() - 1;
         } else {
-            levelSelected--;
+            selectedLevel--;
         }
 
-        mLevelLabel.setText(levels.get(levelSelected).getName());
+        mLevelLabel.setText(levels.get(selectedLevel).getName());
     }
 
     public void startGame(View v) {
         Intent i = new Intent(this, GameActivity.class);
-        i.putExtra(getString(R.string.category), categories.get(categorySelected));
-        i.putExtra(getString(R.string.total_time), levels.get(levelSelected).getTime());
+        i.putExtra(getString(R.string.language), languages.get(selectedLanguage));
+        i.putExtra(getString(R.string.category), categories.get(selectedCategory));
+        i.putExtra(getString(R.string.total_time), levels.get(selectedLevel).getTime());
         startActivity(i);
     }
 
@@ -96,16 +119,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStartValues() {
+        mLanguageLabel = findViewById(R.id.mLanguageLabel);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mLevelLabel = findViewById(R.id.mLevelLabel);
         wordsService = new WordsService();
+        languages = wordsService.getLanguages();
         levels = wordsService.getLevels();
         categories = wordsService.getCategories();
-        if (levels.size() > 0) {
-            categorySelected = 0;
-            mCategoryLabel.setText(categories.get(categorySelected));
-            levelSelected = 0;
-            mLevelLabel.setText(levels.get(levelSelected).getName());
-        }
+
+        selectedLanguage = 0;
+        mLanguageLabel.setText(languages.get(selectedLanguage));
+        selectedCategory = 0;
+        mCategoryLabel.setText(categories.get(selectedCategory));
+        selectedLevel = 0;
+        mLevelLabel.setText(levels.get(selectedLevel).getName());
     }
 }

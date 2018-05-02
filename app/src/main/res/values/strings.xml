@@ -11,4 +11,5 @@
     <string name="vibrate">Vibração</string>
     <string name="reveal_word">Revelar Palavra</string>
     <string name="total_time">TotalTime</string>
+    <string name="language">language</string>
 </resources>
