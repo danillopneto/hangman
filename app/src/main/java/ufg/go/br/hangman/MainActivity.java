@@ -12,23 +12,20 @@ import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.services.WordsService;
 
 public class MainActivity extends AppCompatActivity {
+    TextView mCategoryLabel;
     TextView mLevelLabel;
     WordsService wordsService;
     List<GameLevel> levels;
+    List<String> categories;
     int levelSelected;
+    int categorySelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mLevelLabel = findViewById(R.id.mLevelLabel);
-        wordsService = new WordsService();
-        levels = wordsService.getLevels();
-        if (levels.size() > 0) {
-            levelSelected = 0;
-            mLevelLabel.setText(levels.get(levelSelected).getName());
-        }
+        setStartValues();
     }
 
     @Override
@@ -46,15 +43,34 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void nextCategory(View v) {
+        if (categorySelected == categories.size() - 1) {
+            categorySelected = 0;
+        } else {
+            categorySelected++;
+        }
+
+        mCategoryLabel.setText(categories.get(categorySelected));
+    }
+
     public void nextLevel(View v) {
         if (levelSelected == levels.size() - 1) {
             levelSelected = 0;
-        }
-        else {
+        } else {
             levelSelected++;
         }
 
         mLevelLabel.setText(levels.get(levelSelected).getName());
+    }
+
+    public void previousCategory(View v) {
+        if (categorySelected == 0) {
+            categorySelected = categories.size() - 1;
+        } else {
+            categorySelected--;
+        }
+
+        mCategoryLabel.setText(categories.get(levelSelected));
     }
 
     public void previousLevel(View v) {
@@ -69,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startGame(View v) {
         Intent i = new Intent(this, GameActivity.class);
+        i.putExtra(getString(R.string.category), categories.get(categorySelected));
         i.putExtra(getString(R.string.total_time), levels.get(levelSelected).getTime());
         startActivity(i);
     }
@@ -76,5 +93,19 @@ public class MainActivity extends AppCompatActivity {
     public void showSettings() {
         Intent i = new Intent(this, SettingsActivity.class);
         startActivity(i);
+    }
+
+    private void setStartValues() {
+        mCategoryLabel = findViewById(R.id.mCategoryLabel);
+        mLevelLabel = findViewById(R.id.mLevelLabel);
+        wordsService = new WordsService();
+        levels = wordsService.getLevels();
+        categories = wordsService.getCategories();
+        if (levels.size() > 0) {
+            categorySelected = 0;
+            mCategoryLabel.setText(categories.get(categorySelected));
+            levelSelected = 0;
+            mLevelLabel.setText(levels.get(levelSelected).getName());
+        }
     }
 }

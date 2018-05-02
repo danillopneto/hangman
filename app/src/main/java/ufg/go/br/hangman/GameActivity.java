@@ -42,22 +42,7 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        wordManager = new WordManager();
-        mHangImage = findViewById(R.id.mHangImage);
-        mWord = findViewById(R.id.mWord);
-        mCategoryLabel = findViewById(R.id.mCategoryLabel);
-        mNewGameButton = findViewById(R.id.mNewGameButton);
-        mLettersContainer = findViewById(R.id.mLettersContainer);
-        mMusicOnButton = findViewById(R.id.mMusicOnButton);
-        mMusicOffButton = findViewById(R.id.mMusicOffButton);
-        mGameCountdown = findViewById(R.id.mGameCountdown);
-        category = getIntent().getStringExtra("category");
-        if (category == null || category.equals("")) {
-            category = String.valueOf(getText(R.string.random));
-        }
-
-        timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
-        mCategoryLabel.setText(category);
+        setStartValues();
         newGame();
     }
 
@@ -181,5 +166,21 @@ public class GameActivity extends AppCompatActivity {
 
         Drawable image = getDrawable(fileName);
         mHangImage.setImageDrawable(image);
+    }
+
+    private void setStartValues() {
+        wordManager = new WordManager();
+        mHangImage = findViewById(R.id.mHangImage);
+        mWord = findViewById(R.id.mWord);
+        mCategoryLabel = findViewById(R.id.mCategoryLabel);
+        mNewGameButton = findViewById(R.id.mNewGameButton);
+        mLettersContainer = findViewById(R.id.mLettersContainer);
+        mMusicOnButton = findViewById(R.id.mMusicOnButton);
+        mMusicOffButton = findViewById(R.id.mMusicOffButton);
+        mGameCountdown = findViewById(R.id.mGameCountdown);
+
+        category = getIntent().getStringExtra(getString(R.string.category));
+        timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
+        mCategoryLabel.setText(category);
     }
 }
