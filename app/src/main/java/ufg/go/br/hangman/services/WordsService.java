@@ -14,13 +14,13 @@ import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.model.Word;
 
 public class WordsService {
-    private final String PORTUGUESE = "Português";
+    public static final String PORTUGUESE = "Português";
     private final String ENGLISH = "Inglês";
     private List<Word> _words;
 
     public WordsService() {
         _words = new ArrayList<>();
-        _words.add(new Word("Animals",  createWord(PORTUGUESE,"CÃO", ENGLISH, "DOG")));
+        _words.add(new Word("Animais",  createWord(PORTUGUESE,"CÃO", ENGLISH, "DOG")));
         _words.add(new Word("Comida",  createWord(PORTUGUESE,"SORVETE", ENGLISH, "ICECREAM")));
         _words.add(new Word("Corpo",  createWord(PORTUGUESE,"PESCOÇO", ENGLISH, "NECK")));
         _words.add(new Word("Cozinha",  createWord(PORTUGUESE,"COLHER", ENGLISH, "SPOON")));

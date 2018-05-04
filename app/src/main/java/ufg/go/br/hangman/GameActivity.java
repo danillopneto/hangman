@@ -12,25 +12,24 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import java.util.List;
-
 import ufg.go.br.hangman.Util.SoundGame;
 import ufg.go.br.hangman.Util.WordManager;
 import ufg.go.br.hangman.model.Word;
+import ufg.go.br.hangman.services.WordsService;
 
 public class GameActivity extends AppCompatActivity {
-    private int mistakes = 0;
-    private int timeLimit;
-    private String language;
-    private String category;
+    int mistakes = 0;
+    int timeLimit;
+    String language = WordsService.PORTUGUESE;
+    String category;
 
-    private CountDownTimer countDownTimer;
-    private char[] guess;
-    private WordManager wordManager;
-    private Word dataWordToBeGuessed;
-    private String wordToBeGuessed;
-    private String normalizedWord;
+    CountDownTimer countDownTimer;
+    char[] guess;
+    WordManager wordManager;
+    Word dataWordToBeGuessed;
+    String wordToBeGuessed;
+    String normalizedWord;
 
     ImageView mHangImage;
     TextView mWord;
@@ -55,19 +54,12 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         sg.stopMusicBehind();
     }
-
-    public void setPageSettings(View v) {
-        //Intent intent = new Intent(this, SettingsActivity.class);
-        // startActivity(intent);
-
+    
+	public void setPageSettings(View v) {
         Intent myIntent = new Intent(GameActivity.this, SettingsActivity.class);
         GameActivity.this.startActivity(myIntent);
-
-
     }
-
-
-
+	
     public void letterPressed(View v) {
         if (mMusicOnButton.getVisibility() == View.VISIBLE) {
             sg.playMusicButton();
@@ -195,7 +187,6 @@ public class GameActivity extends AppCompatActivity {
         mMusicOffButton = findViewById(R.id.mMusicOffButton);
         mGameCountdown = findViewById(R.id.mGameCountdown);
 
-        language = getIntent().getStringExtra(getString(R.string.language));
         category = getIntent().getStringExtra(getString(R.string.category));
         timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
         mCategoryLabel.setText(category);

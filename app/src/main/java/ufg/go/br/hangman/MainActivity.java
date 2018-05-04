@@ -1,40 +1,43 @@
 package ufg.go.br.hangman;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.List;
 import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.services.WordsService;
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity {
-    TextView mLanguageLabel;
+    FirebaseDatabase database;
     TextView mCategoryLabel;
     TextView mLevelLabel;
     WordsService wordsService;
-    List<String> languages;
     List<GameLevel> levels;
     List<String> categories;
-    int selectedLanguage;
     int selectedCategory;
     int selectedLevel;
 
-
-
-    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setStartValues();
-
     }
 
     @Override
@@ -52,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void nextCategory(View v) {
         if (selectedCategory == categories.size() - 1) {
             selectedCategory = 0;
@@ -61,16 +63,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mCategoryLabel.setText(categories.get(selectedCategory));
-    }
-
-    public void nextLanguage(View v) {
-        if (selectedLanguage == languages.size() - 1) {
-            selectedLanguage = 0;
-        } else {
-            selectedLanguage++;
-        }
-
-        mLanguageLabel.setText(languages.get(selectedLanguage));
     }
 
     public void nextLevel(View v) {
@@ -93,16 +85,6 @@ public class MainActivity extends AppCompatActivity {
         mCategoryLabel.setText(categories.get(selectedLevel));
     }
 
-    public void previousLanguage(View v) {
-        if (selectedLanguage == 0) {
-            selectedLanguage = languages.size() - 1;
-        } else {
-            selectedLanguage--;
-        }
-
-        mLanguageLabel.setText(languages.get(selectedLanguage));
-    }
-
     public void previousLevel(View v) {
         if (selectedLevel == 0) {
             selectedLevel = levels.size() - 1;
@@ -115,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void startGame(View v) {
         Intent i = new Intent(this, GameActivity.class);
-        i.putExtra(getString(R.string.language), languages.get(selectedLanguage));
         i.putExtra(getString(R.string.category), categories.get(selectedCategory));
         i.putExtra(getString(R.string.total_time), levels.get(selectedLevel).getTime());
         startActivity(i);
@@ -127,19 +108,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStartValues() {
-        mLanguageLabel = findViewById(R.id.mLanguageLabel);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        database = FirebaseDatabase.getInstance();
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mLevelLabel = findViewById(R.id.mLevelLabel);
         wordsService = new WordsService();
-        languages = wordsService.getLanguages();
-        levels = wordsService.getLevels();
-        categories = wordsService.getCategories();
 
-        selectedLanguage = 0;
-        mLanguageLabel.setText(languages.get(selectedLanguage));
-        selectedCategory = 0;
-        mCategoryLabel.setText(categories.get(selectedCategory));
-        selectedLevel = 0;
-        mLevelLabel.setText(levels.get(selectedLevel).getName());
+        database.getReference("categories").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                categories = new ArrayList<>();
+                for (DataSnapshot adSnapshot: dataSnapshot.getChildren()) {
+                    categories.add(adSnapshot.getValue(String.class));
+                }
+
+                selectedCategory = 0;
+                mCategoryLabel.setText(categories.get(selectedCategory));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "" + databaseError);
+            }
+        });
+
+        database.getReference("levels").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                levels = new ArrayList<>();
+                for (DataSnapshot adSnapshot: dataSnapshot.getChildren()) {
+                    levels.add(adSnapshot.getValue(GameLevel.class));
+                }
+
+                selectedLevel = 0;
+                mLevelLabel.setText(levels.get(selectedLevel).getName());
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "" + databaseError);
+            }
+        });
     }
 }
