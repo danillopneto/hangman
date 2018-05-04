@@ -1,11 +1,14 @@
 package ufg.go.br.hangman;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.List;
 import ufg.go.br.hangman.model.GameLevel;
@@ -23,11 +26,15 @@ public class MainActivity extends AppCompatActivity {
     int selectedCategory;
     int selectedLevel;
 
+
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setStartValues();
+
     }
 
     @Override
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
     public void nextCategory(View v) {
         if (selectedCategory == categories.size() - 1) {

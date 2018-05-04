@@ -1,5 +1,6 @@
 package ufg.go.br.hangman;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
@@ -54,6 +55,18 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         sg.stopMusicBehind();
     }
+
+    public void setPageSettings(View v) {
+        //Intent intent = new Intent(this, SettingsActivity.class);
+        // startActivity(intent);
+
+        Intent myIntent = new Intent(GameActivity.this, SettingsActivity.class);
+        GameActivity.this.startActivity(myIntent);
+
+
+    }
+
+
 
     public void letterPressed(View v) {
         if (mMusicOnButton.getVisibility() == View.VISIBLE) {
