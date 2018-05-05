@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        database = FirebaseDatabase.getInstance();
+        database.setPersistenceEnabled(true);
+
         setStartValues();
     }
 
@@ -82,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             selectedCategory--;
         }
 
-        mCategoryLabel.setText(categories.get(selectedLevel));
+        mCategoryLabel.setText(categories.get(selectedCategory));
     }
 
     public void previousLevel(View v) {
@@ -108,13 +111,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStartValues() {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        database = FirebaseDatabase.getInstance();
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mLevelLabel = findViewById(R.id.mLevelLabel);
         wordsService = new WordsService();
 
-        database.getReference("categories").addValueEventListener(new ValueEventListener() {
+        database.getReference("portuguese").child("categories").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 categories = new ArrayList<>();
@@ -131,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        database.getReference("levels").addValueEventListener(new ValueEventListener() {
+        database.getReference("portuguese").child("levels").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 levels = new ArrayList<>();

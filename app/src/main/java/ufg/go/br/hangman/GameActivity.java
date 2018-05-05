@@ -6,28 +6,35 @@ import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import ufg.go.br.hangman.Util.SoundGame;
 import ufg.go.br.hangman.Util.WordManager;
-import ufg.go.br.hangman.model.Word;
-import ufg.go.br.hangman.services.WordsService;
+
+import static android.content.ContentValues.TAG;
 
 public class GameActivity extends AppCompatActivity {
+    FirebaseDatabase database;
     int mistakes = 0;
     int timeLimit;
-    String language = WordsService.PORTUGUESE;
     String category;
 
     CountDownTimer countDownTimer;
+    List<String> words;
     char[] guess;
     WordManager wordManager;
-    Word dataWordToBeGuessed;
     String wordToBeGuessed;
     String normalizedWord;
 
@@ -101,8 +108,32 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void newGame() {
-        dataWordToBeGuessed = wordManager.getNewWord(category);
-        wordToBeGuessed = dataWordToBeGuessed.getWord().get(language);
+        database.getReference("portuguese").child("words").child(category).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                words = new ArrayList<>();
+                for (DataSnapshot adSnapshot: dataSnapshot.getChildren()) {
+                    words.add(adSnapshot.getValue(String.class).toUpperCase());
+                }
+
+                setDataForNewWord();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d(TAG, "" + databaseError);
+            }
+        });
+    }
+
+    private void setDataForNewWord() {
+        if (words.size() == 0) {
+            return;
+        }
+
+        Random random = new Random();
+        int index = random.nextInt((words.size() - 1) * 1000);
+        wordToBeGuessed = words.get(index / 1000);
+
         normalizedWord = wordManager.getNormalizedWord(wordToBeGuessed);
         guess = wordManager.getWordMasked(wordToBeGuessed);
         mWord.setText(String.valueOf(guess));
@@ -177,7 +208,9 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setStartValues() {
+        database = FirebaseDatabase.getInstance();
         wordManager = new WordManager();
+
         mHangImage = findViewById(R.id.mHangImage);
         mWord = findViewById(R.id.mWord);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
