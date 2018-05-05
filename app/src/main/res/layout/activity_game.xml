@@ -56,10 +56,7 @@
             android:layout_alignParentBottom="true"
             app:srcCompat="@mipmap/ic_settings_black_24dp"
             android:onClick="setPageSettings"/>
-
-
     </LinearLayout>
-
     <TextView
         android:id="@+id/mWord"
         android:layout_width="match_parent"
@@ -71,7 +68,17 @@
         android:gravity="center_horizontal"
         android:textColor="@color/colorText"
         android:layout_below="@+id/containerHangman"/>
-
+    <TextView
+        android:id="@+id/mMeaning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textSize="22dp"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorText"
+        android:layout_below="@+id/mWord"
+        android:visibility="gone" />
     <LinearLayout
         android:id="@+id/mLettersContainer"
         android:layout_below="@+id/mWord"

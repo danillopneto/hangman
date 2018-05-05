@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Random;
 import ufg.go.br.hangman.Util.SoundGame;
 import ufg.go.br.hangman.Util.WordManager;
+import ufg.go.br.hangman.model.DictionaryItem;
 
 import static android.content.ContentValues.TAG;
 
@@ -32,14 +33,16 @@ public class GameActivity extends AppCompatActivity {
     String category;
 
     CountDownTimer countDownTimer;
-    List<String> words;
+    List<DictionaryItem> dictionary;
     char[] guess;
     WordManager wordManager;
+    DictionaryItem dataWordToBeGuessed;
     String wordToBeGuessed;
     String normalizedWord;
 
     ImageView mHangImage;
     TextView mWord;
+    TextView mMeaning;
     TextView mCategoryLabel;
     Button mNewGameButton;
     LinearLayout mLettersContainer;
@@ -111,9 +114,9 @@ public class GameActivity extends AppCompatActivity {
         database.getReference("portuguese").child("words").child(category).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                words = new ArrayList<>();
+                dictionary = new ArrayList<>();
                 for (DataSnapshot adSnapshot: dataSnapshot.getChildren()) {
-                    words.add(adSnapshot.getValue(String.class).toUpperCase());
+                    dictionary.add(adSnapshot.getValue(DictionaryItem.class));
                 }
 
                 setDataForNewWord();
@@ -126,13 +129,14 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void setDataForNewWord() {
-        if (words.size() == 0) {
+        if (dictionary.size() == 0) {
             return;
         }
 
         Random random = new Random();
-        int index = random.nextInt((words.size() - 1) * 1000);
-        wordToBeGuessed = words.get(index / 1000);
+        int index = random.nextInt((dictionary.size() - 1) * 1000);
+        dataWordToBeGuessed = dictionary.get(index / 1000);
+        wordToBeGuessed = dataWordToBeGuessed.getWord().toUpperCase();
 
         normalizedWord = wordManager.getNormalizedWord(wordToBeGuessed);
         guess = wordManager.getWordMasked(wordToBeGuessed);
@@ -172,6 +176,10 @@ public class GameActivity extends AppCompatActivity {
             countDownTimer.cancel();
             sg.stopMusicBehind();
             setHangDraw();
+
+            mWord.setText(wordToBeGuessed);
+            mMeaning.setText(getString(R.string.meaning) + " " + dataWordToBeGuessed.getMeaning());
+            mMeaning.setVisibility(View.VISIBLE);
         }
     }
 
@@ -213,6 +221,7 @@ public class GameActivity extends AppCompatActivity {
 
         mHangImage = findViewById(R.id.mHangImage);
         mWord = findViewById(R.id.mWord);
+        mMeaning = findViewById(R.id.mMeaning);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mNewGameButton = findViewById(R.id.mNewGameButton);
         mLettersContainer = findViewById(R.id.mLettersContainer);
