@@ -50,6 +50,12 @@ public class GameHistoryDbHelper extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    public void deleteAllGameHistory(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + GameHistoryEntry.TABLE_NAME);
+        db.close();
+    }
+
     public long createGameHistory(GameHistory gameHistory){
         SQLiteDatabase db = this.getWritableDatabase();
 
