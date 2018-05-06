@@ -8,7 +8,7 @@ public class GameHistoryContract {
     private GameHistoryContract() {}
 
     public static class GameHistoryEntry   {
-        public static final String TABLE_NAME = "game_history";
+        public static final String TABLE_NAME = "hm_game_history";
         public static final String COLUMN_NAME_WORD = "word";
         public static final String COLUMN_NAME_TIME = "time";
         public static final String COLUMN_NAME_LEVEL = "level";

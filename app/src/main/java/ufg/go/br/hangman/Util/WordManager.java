@@ -4,16 +4,10 @@ import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 
-import ufg.go.br.hangman.model.Word;
 import ufg.go.br.hangman.services.WordsService;
 
 public class WordManager {
     public final int LIMIT_MISTAKES = 7;
-
-    public Word getNewWord(String category) {
-        WordsService service = new WordsService();
-        return service.getNewWord(category);
-    }
 
     public String getNormalizedWord(String word) {
         return Normalizer
@@ -33,9 +27,14 @@ public class WordManager {
     }
 
     public char[] getWordMasked(String wordToBeMasked) {
+        char[] wordAsChar = wordToBeMasked.toCharArray();
         char[] word = new char[wordToBeMasked.length()];
-        for (int i = 0; i < wordToBeMasked.length(); i++) {
-            word[i] = '―';
+        for (int i = 0; i < wordAsChar.length; i++) {
+            if (wordAsChar[i] == ' ') {
+                word[i] = ' ';
+            } else {
+                word[i] = '_';
+            }
         }
 
         return word;
@@ -49,7 +48,7 @@ public class WordManager {
         return guess;
     }
 
-    public WordResult tryNewLetter(String wordToBeGuessed, char[] guess, char letter) {
+    public AttemptResult tryNewLetter(String wordToBeGuessed, char[] guess, char letter) {
         boolean letterFounded = false;
 
         String normalizedWord = getNormalizedWord(wordToBeGuessed);
@@ -60,6 +59,6 @@ public class WordManager {
             }
         }
 
-        return new WordResult(letterFounded, guess);
+        return new AttemptResult(letterFounded, guess);
     }
 }

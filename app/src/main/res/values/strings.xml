@@ -12,4 +12,6 @@
     <string name="reveal_word">Revelar Palavra</string>
     <string name="total_time">TotalTime</string>
     <string name="language">language</string>
+    <string name="meaning">Significado:</string>
+    <string name="history">Histórico</string>
 </resources>

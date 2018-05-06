@@ -1,6 +1,8 @@
 package ufg.go.br.hangman;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,16 +20,36 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     private TextView[] mDots;
     private SliderAdapter sliderAdapter;
-
     private Button mNextButton;
     private Button mPreviousButton;
-
     private int mCurrentPage;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen);
+
+        // Armazenando dados inciais da configuração
+
+        SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
+        SharedPreferences.Editor ed  = preferences.edit();
+
+        if(!preferences.getBoolean("switchvibrate", false)){
+            ed.putBoolean("switchvibrate", false);
+        }
+
+        if(!preferences.getBoolean("switchsound", false)){
+            ed.putBoolean("switchsound", false);
+        }
+
+        if(!preferences.getBoolean("switchreveal", false)){
+            ed.putBoolean("switchreveal", false);
+        }
+
 
         mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         mLayout = (LinearLayout) findViewById(R.id.mLayout);

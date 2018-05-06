@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "443328917253",
+    "firebase_url": "https://hangman-f700a.firebaseio.com",
+    "project_id": "hangman-f700a",
+    "storage_bucket": "hangman-f700a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443328917253:android:00abe75a16474388",
+        "android_client_info": {
+          "package_name": "ufg.go.br.hangman"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443328917253-o6fcu5i2rm545c8hua0hekij3pem7qhi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ufg.go.br.hangman",
+            "certificate_hash": "d50c76166f17f80db14a74d59dfbbc83977821ca"
+          }
+        },
+        {
+          "client_id": "443328917253-7lugdue89h7ndaavgp8hlr342rt75feb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4epLNAeWRBXXGNBejex59roJFs2v-6I4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443328917253-7lugdue89h7ndaavgp8hlr342rt75feb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

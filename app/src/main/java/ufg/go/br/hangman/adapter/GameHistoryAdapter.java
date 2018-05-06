@@ -42,7 +42,7 @@ public class GameHistoryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = activity.getLayoutInflater().inflate(R.layout.activity_game_history, parent, false);
+        View view = activity.getLayoutInflater().inflate(R.layout.activity_game_history_item, parent, false);
         GameHistory gameHistory = gameHistoryList.get(position);
 
         TextView wordField = (TextView)view.findViewById(R.id.game_history_word);
@@ -50,7 +50,7 @@ public class GameHistoryAdapter extends BaseAdapter {
         TextView levelField = (TextView)view.findViewById(R.id.game_history_level);
 
         wordField.setText(gameHistory.getWord());
-        timeField.setText(gameHistory.getTime());
+        timeField.setText(Integer.valueOf(gameHistory.getTime()).toString() + " segundos");
         levelField.setText(gameHistory.getLevel());
 
         return view;

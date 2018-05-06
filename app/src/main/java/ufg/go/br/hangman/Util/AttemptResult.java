@@ -4,11 +4,11 @@ package ufg.go.br.hangman.Util;
  * Created by claud on 06/05/2018.
  */
 
-public class WordResult {
+public class AttemptResult {
     private boolean success;
     private char[] newWord;
 
-    public WordResult(boolean success, char[] newWord) {
+    public AttemptResult(boolean success, char[] newWord) {
         this.success = success;
         this.newWord = newWord;
     }

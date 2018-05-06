@@ -24,20 +24,22 @@ public class GameHistoryDbHelper extends SQLiteOpenHelper {
     private static final String INTEGER_TYPE = "INTEGER";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_GAME_HISTORY = "CREATE TABLE " + GameHistoryEntry.TABLE_NAME
-            + "(" + GameHistoryEntry.COLUMN_NAME_WORD + TEXT_TYPE + COMMA_SEP
-            + GameHistoryEntry.COLUMN_NAME_LEVEL + TEXT_TYPE + COMMA_SEP
-            + GameHistoryEntry.COLUMN_NAME_TIME + INTEGER_TYPE + ")";
+            + "(" + GameHistoryEntry.COLUMN_NAME_WORD + " " + TEXT_TYPE + COMMA_SEP
+            + GameHistoryEntry.COLUMN_NAME_LEVEL + " " + TEXT_TYPE + COMMA_SEP
+            + GameHistoryEntry.COLUMN_NAME_DATE + " " + TEXT_TYPE + COMMA_SEP
+            + GameHistoryEntry.COLUMN_NAME_TIME + " " +INTEGER_TYPE + ")";
 
     private static final String SQL_DELETE_POSTS =
             "DROP TABLE IF EXISTS " + GameHistoryEntry.TABLE_NAME;
 
     public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "GameHistory.db";
+    public static final String DATABASE_NAME = "DBGameHistory.db";
 
     public GameHistoryDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(SQL_CREATE_GAME_HISTORY);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -57,7 +59,7 @@ public class GameHistoryDbHelper extends SQLiteOpenHelper {
         values.put(GameHistoryEntry.COLUMN_NAME_TIME, gameHistory.getTime());
         values.put(GameHistoryEntry.COLUMN_NAME_DATE, getDateTime());
 
-        long gameHistoryId = db.insert(GameHistoryEntry.TABLE_NAME, null, values);
+        long gameHistoryId = db.insertOrThrow(GameHistoryEntry.TABLE_NAME, null, values);
 
         return gameHistoryId;
     }

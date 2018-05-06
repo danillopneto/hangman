@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/background"
+    android:background="@mipmap/background"
     android:weightSum="2">
     <LinearLayout
         android:layout_height="match_parent"
@@ -71,33 +71,6 @@
             android:background="@drawable/roundedbutton"
             android:onClick="nextLevel" />
     </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageButton
-            android:layout_margin="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:src="@drawable/ic_chevron_left_white_36dp"
-            android:background="@drawable/roundedbutton"
-            android:onClick="previousLanguage" />
-        <TextView
-            android:id="@+id/mLanguageLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:textColor="@color/colorText"
-            android:fontFamily="@font/level_font"/>
-        <ImageButton
-            android:layout_margin="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_chevron_right_white_36dp"
-            android:background="@drawable/roundedbutton"
-            android:onClick="nextLanguage" />
-    </RelativeLayout>
     <LinearLayout
         android:layout_below="@+id/mHangImage"
         android:layout_width="match_parent"
@@ -107,11 +80,20 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp" >
         <Button
-            android:id="@+id/mStartGameButton"
+        android:id="@+id/mStartGameButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/new_game"
+        android:onClick="startGame"
+        android:background="@drawable/roundedbutton"
+        android:textColor="@color/colorText" />
+        <Button
+            android:id="@+id/mGameHistoryButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/new_game"
-            android:onClick="startGame"
+            android:text="@string/history"
+            android:onClick="openGameHistory"
+            android:layout_marginTop="10sp"
             android:background="@drawable/roundedbutton"
             android:textColor="@color/colorText" />
     </LinearLayout>
