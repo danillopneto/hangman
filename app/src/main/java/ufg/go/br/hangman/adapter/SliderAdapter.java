@@ -1,4 +1,4 @@
-package ufg.go.br.hangman;
+package ufg.go.br.hangman.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import ufg.go.br.hangman.R;
 
 /**
  * Created by claud on 01/05/2018.

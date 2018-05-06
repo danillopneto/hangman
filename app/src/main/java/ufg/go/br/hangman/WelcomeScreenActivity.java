@@ -10,7 +10,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScreenActivity extends AppCompatActivity {
+import ufg.go.br.hangman.adapter.SliderAdapter;
+
+public class WelcomeScreenActivity extends AppCompatActivity {
 
     private ViewPager mSlideViewPager;
     private LinearLayout mLayout;
@@ -44,8 +46,8 @@ public class ScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mCurrentPage == 1){
-                    Intent myIntent = new Intent(ScreenActivity.this, MainActivity.class);
-                    ScreenActivity.this.startActivity(myIntent);
+                    Intent myIntent = new Intent(WelcomeScreenActivity.this, MainActivity.class);
+                    WelcomeScreenActivity.this.startActivity(myIntent);
                 } else{
                     mSlideViewPager.setCurrentItem(mCurrentPage + 1);
                 }

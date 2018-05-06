@@ -48,4 +48,18 @@ public class WordManager {
 
         return guess;
     }
+
+    public WordResult tryNewLetter(String wordToBeGuessed, char[] guess, char letter) {
+        boolean letterFounded = false;
+
+        String normalizedWord = getNormalizedWord(wordToBeGuessed);
+        for (int index = 0; index < normalizedWord.length(); index++) {
+            if (normalizedWord.toCharArray()[index] == letter) {
+                guess[index] = wordToBeGuessed.toCharArray()[index];
+                letterFounded = true;
+            }
+        }
+
+        return new WordResult(letterFounded, guess);
+    }
 }

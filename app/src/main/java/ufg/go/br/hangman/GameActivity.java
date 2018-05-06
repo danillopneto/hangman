@@ -14,12 +14,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import ufg.go.br.hangman.Util.GameManager;
 import ufg.go.br.hangman.Util.SoundGame;
 import ufg.go.br.hangman.Util.WordManager;
+import ufg.go.br.hangman.db.GameHistoryDbHelper;
+import ufg.go.br.hangman.model.GameHistory;
 import ufg.go.br.hangman.model.Word;
+import ufg.go.br.hangman.Util.WordResult;
 
 public class GameActivity extends AppCompatActivity {
-    private int mistakes = 0;
     private int timeLimit;
     private String language;
     private String category;
@@ -40,6 +43,7 @@ public class GameActivity extends AppCompatActivity {
     ImageButton mMusicOffButton;
     SoundGame sg;
     TextView mGameCountdown;
+    GameManager mGameManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +70,16 @@ public class GameActivity extends AppCompatActivity {
         letterButton.setBackgroundColor(Color.TRANSPARENT);
 
         char letter = letterButton.getText().toString().toCharArray()[0];
-        List<Integer> positions = wordManager.getLetterPositions(normalizedWord, letter);
-        if (positions.size() > 0) {
-            guess = wordManager.replaceLetter(wordToBeGuessed, guess, positions);
-            mWord.setText(String.valueOf(guess));
+
+        WordResult wordResult = mGameManager.tryNewLetter(letter, guess);
+
+        if (wordResult.isSuccess()) {
+            mWord.setText(String.valueOf(wordResult.getNewWord()));
         } else {
-            mistakes++;
             setHangDraw();
         }
 
-        setEndGameLayout();
+        setEndGameLayout(0);
     }
 
     public void setMusicOff(View v) {
@@ -96,10 +100,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void newGame() {
-        dataWordToBeGuessed = wordManager.getNewWord(category);
-        wordToBeGuessed = dataWordToBeGuessed.getWord().get(language);
-        normalizedWord = wordManager.getNormalizedWord(wordToBeGuessed);
-        guess = wordManager.getWordMasked(wordToBeGuessed);
+        guess = mGameManager.getNewWordMasked(category, language);
+
         mWord.setText(String.valueOf(guess));
         mNewGameButton.setVisibility(View.GONE);
 
@@ -110,8 +112,9 @@ public class GameActivity extends AppCompatActivity {
         setHangDraw();
 
         countDownTimer = new CountDownTimer(timeLimit * 1000, 1000) {
+            long seconds = 0;
             public void onTick(long millisUntilFinished) {
-                long seconds = millisUntilFinished / 1000;
+                seconds = millisUntilFinished / 1000;
                 mGameCountdown.setText("" + seconds);
 
                 if (seconds <= 5) {
@@ -120,28 +123,38 @@ public class GameActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                mistakes = wordManager.LIMIT_MISTAKES;
+                mGameManager.finish();
                 mGameCountdown.setVisibility(View.GONE);
-                setEndGameLayout();
+                setEndGameLayout(seconds);
             }
         }.start();
     }
 
-    private void setEndGameLayout() {
-        if (wordToBeGuessed.equals(String.valueOf(guess))
-                || mistakes >= wordManager.LIMIT_MISTAKES) {
+    private void setEndGameLayout(long seconds) {
+        if (mGameManager.isDefeat() || mGameManager.isVictory(guess)) {
             mNewGameButton.setVisibility(View.VISIBLE);
             mLettersContainer.setVisibility(View.GONE);
             mGameCountdown.setVisibility(View.GONE);
             countDownTimer.cancel();
             sg.stopMusicBehind();
             setHangDraw();
+
+            if(mGameManager.isVictory(guess)){
+
+                GameHistory gameHistory = new GameHistory();
+                gameHistory.setWord(guess.toString());
+                gameHistory.setTime((int)seconds);
+                gameHistory.setLevel("facil");
+
+                GameHistoryDbHelper gameHistoryDbHelper = new GameHistoryDbHelper(getBaseContext());
+                gameHistoryDbHelper.createGameHistory(gameHistory);
+            }
         }
     }
 
     private void setHangDraw() {
         int fileName;
-        switch (mistakes) {
+        switch (mGameManager.getNumberOfMistakes()) {
             case 1:
                 fileName = R.drawable.first;
                 break;
@@ -173,6 +186,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void setStartValues() {
         wordManager = new WordManager();
+        mGameManager = new GameManager();
         mHangImage = findViewById(R.id.mHangImage);
         mWord = findViewById(R.id.mWord);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
