@@ -64,11 +64,6 @@ public class GameActivity extends AppCompatActivity {
         sg.stopMusicBehind();
     }
 
-    public void setPageSettings(View v) {
-        Intent myIntent = new Intent(GameActivity.this, SettingsActivity.class);
-        GameActivity.this.startActivity(myIntent);
-    }
-	
     public void letterPressed(View v) {
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
