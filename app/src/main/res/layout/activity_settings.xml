@@ -61,7 +61,7 @@
             android:layout_margin="20dp"
             android:text="@string/sound"
             android:textSize="20dp"
-            android:checked="true"/>
+            />
 
 
         <Switch
@@ -71,7 +71,7 @@
             android:layout_margin="20dp"
             android:text="@string/vibrate"
             android:textSize="20dp"
-            android:checked="true"/>
+            />
 
         <Switch
             android:id="@+id/switchreveal"
@@ -80,7 +80,7 @@
             android:layout_margin="20dp"
             android:text="@string/reveal_word"
             android:textSize="20dp"
-            android:checked="true"/>
+            />
 
     </LinearLayout>
 
