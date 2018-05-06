@@ -22,7 +22,7 @@ public class VibrationGame {
     public void startVibrateBehind(){
 
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(5);
+        vibrator.vibrate(50);
     }
 
 }

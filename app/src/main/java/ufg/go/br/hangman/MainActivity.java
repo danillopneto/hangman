@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void setPageSettings(View v) {
+        Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
+
     public void nextCategory(View v) {
         if (selectedCategory == categories.size() - 1) {
             selectedCategory = 0;

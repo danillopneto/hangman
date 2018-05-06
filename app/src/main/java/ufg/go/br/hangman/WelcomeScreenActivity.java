@@ -33,24 +33,6 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen);
 
-        // Armazenando dados inciais da configuração
-
-        SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed  = preferences.edit();
-
-        if(!preferences.getBoolean("switchvibrate", false)){
-            ed.putBoolean("switchvibrate", false);
-        }
-
-        if(!preferences.getBoolean("switchsound", false)){
-            ed.putBoolean("switchsound", false);
-        }
-
-        if(!preferences.getBoolean("switchreveal", false)){
-            ed.putBoolean("switchreveal", false);
-        }
-
-
         mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         mLayout = (LinearLayout) findViewById(R.id.mLayout);
 

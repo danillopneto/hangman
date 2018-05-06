@@ -1,6 +1,7 @@
 package ufg.go.br.hangman;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
@@ -22,6 +23,7 @@ import java.util.List;
 
 import ufg.go.br.hangman.Util.AttemptResult;
 import ufg.go.br.hangman.Util.SoundGame;
+import ufg.go.br.hangman.Util.VibrationGame;
 import ufg.go.br.hangman.Util.WordManager;
 import ufg.go.br.hangman.model.DictionaryItem;
 import static android.content.ContentValues.TAG;
@@ -43,9 +45,8 @@ public class GameActivity extends AppCompatActivity {
     TextView mCategoryLabel;
     Button mNewGameButton;
     LinearLayout mLettersContainer;
-    ImageButton mMusicOnButton;
-    ImageButton mMusicOffButton;
     SoundGame sg;
+    VibrationGame vg;
     TextView mGameCountdown;
     GameManager mGameManager;
 
@@ -62,16 +63,27 @@ public class GameActivity extends AppCompatActivity {
         super.onDestroy();
         sg.stopMusicBehind();
     }
-    
-	public void setPageSettings(View v) {
+
+    public void setPageSettings(View v) {
         Intent myIntent = new Intent(GameActivity.this, SettingsActivity.class);
         GameActivity.this.startActivity(myIntent);
     }
 	
     public void letterPressed(View v) {
-        if (mMusicOnButton.getVisibility() == View.VISIBLE) {
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
+        boolean audio = preferences.getBoolean("switchsound", false);
+        boolean vibration = preferences.getBoolean("switchvibrate", false);
+        if(audio==true) {
             sg.playMusicButton();
         }
+
+
+
+        if(vibration==true) {
+            vg.startVibrateBehind();
+        }
+
 
         final int id = v.getId();
         Button letterButton = findViewById(id);
@@ -88,18 +100,6 @@ public class GameActivity extends AppCompatActivity {
         }
 
         setEndGameLayout(0);
-    }
-
-    public void setMusicOff(View v) {
-        sg.stopMusicBehind();
-        mMusicOffButton.setVisibility(View.VISIBLE);
-        mMusicOnButton.setVisibility(View.GONE);
-    }
-
-    public void setMusicOn(View v) {
-        sg.playMusicBehind();
-        mMusicOffButton.setVisibility(View.GONE);
-        mMusicOnButton.setVisibility(View.VISIBLE);
     }
 
     public void startNewGame(View v) {
@@ -139,9 +139,14 @@ public class GameActivity extends AppCompatActivity {
         mNewGameButton.setVisibility(View.GONE);
 
         sg = new SoundGame(GameActivity.this);
-        mMusicOnButton.setVisibility(View.VISIBLE);
-        mMusicOffButton.setVisibility(View.GONE);
-        sg.playMusicBehind();
+        vg = new VibrationGame(GameActivity.this);
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
+        boolean value = preferences.getBoolean("switchsound", false);
+        if(value==true) {
+            sg.playMusicBehind();
+        }
+
         setHangDraw();
 
         countDownTimer = new CountDownTimer(timeLimit * 1000, 1000) {
@@ -237,13 +242,11 @@ public class GameActivity extends AppCompatActivity {
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
         mNewGameButton = findViewById(R.id.mNewGameButton);
         mLettersContainer = findViewById(R.id.mLettersContainer);
-        mMusicOnButton = findViewById(R.id.mMusicOnButton);
-        mMusicOffButton = findViewById(R.id.mMusicOffButton);
         mGameCountdown = findViewById(R.id.mGameCountdown);
-
         category = getIntent().getStringExtra(getString(R.string.category));
         timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
         mCategoryLabel.setText(category);
+
     }
 
     private void removeButton(Button letterButton){
