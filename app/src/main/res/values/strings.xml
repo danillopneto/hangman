@@ -14,4 +14,5 @@
     <string name="language">language</string>
     <string name="meaning">Significado:</string>
     <string name="history">Histórico</string>
+    <string name="word">Palavra</string>
 </resources>

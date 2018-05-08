@@ -1,82 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:autofit="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
     android:background="@color/colorPrimaryDark"
-    android:padding="10dp">
-
-    <LinearLayout
-        android:id="@+id/containerHangman"
+    android:weightSum="5">
+    <RelativeLayout
+        android:id="@+id/mGeneralData"
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:paddingRight="10dp"
+        android:background="@color/colorButton">
+        <TextView
+            android:id="@+id/mCategoryLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textColor="@color/colorText"
+            android:layout_centerInParent="true"
+            android:textStyle="bold" />
 
         <ImageView
-            android:id="@+id/mHangImage"
-            android:layout_width="200dp"
-            android:layout_height="match_parent" />
-
-
-        <LinearLayout
+            android:id="@+id/mClockImage"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_access_time_white_24dp"
+            android:layout_toLeftOf="@+id/mGameCountdown"/>
+        <TextView
+            android:id="@+id/mGameCountdown"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textSize="25dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorText"
+            android:text="00"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/mGameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="3">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/category"
-                android:textColor="@color/colorText"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/mCategoryLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16dp"
-                android:textColor="@color/colorText"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/mNewGameButton"
+            <ImageView
+                android:id="@+id/mHangImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginTop="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_game"
-                android:onClick="startNewGame" />
-
+                android:src="@drawable/first"/>
+            <TextView
+                android:id="@+id/mWord"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:letterSpacing="0.5"
+                android:textSize="32dp"
+                android:gravity="center_horizontal|center_vertical"
+                android:textColor="@color/colorText"
+                android:text="@string/word"/>
         </LinearLayout>
-
     </LinearLayout>
-    <TextView
-        android:id="@+id/mWord"
+
+    <LinearLayout
+        android:id="@+id/mEndGameContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:letterSpacing="0.5"
-        android:ems="10"
-        android:textSize="32dp"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorText"
-        android:layout_below="@+id/containerHangman"/>
-    <TextView
-        android:id="@+id/mMeaning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:textSize="22dp"
-        android:gravity="center_horizontal"
-        android:textColor="@color/colorText"
-        android:layout_below="@+id/mWord"
-        android:visibility="gone" />
+        android:layout_weight="1.8"
+        android:orientation="vertical"
+        android:visibility="visible">
+        <TextView
+            android:id="@+id/mMeaning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="22dp"
+            android:gravity="center_horizontal"
+            android:textColor="@color/colorText"
+            android:text="@string/meaning"
+            android:layout_below="@+id/mWord" />
+        <Button
+            android:id="@+id/mNewGameButton"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_game"
+            android:layout_gravity="bottom|center_horizontal"
+            android:onClick="startNewGame" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/mLettersContainer"
         android:layout_below="@+id/mWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1.8"
         android:orientation="vertical"
         android:gravity="center_vertical|center_horizontal">
         <LinearLayout
@@ -84,7 +108,7 @@
             android:layout_below="@+id/mWord"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal">
+            android:gravity="center_horizontal">
             <Button
                 android:id="@+id/mButtonA"
                 android:layout_width="35dp"
@@ -134,7 +158,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/firstContainer"
-            android:gravity="center_vertical|center_horizontal">
+            android:gravity="center_horizontal">
             <Button
                 android:id="@+id/mButtonH"
                 android:layout_width="35dp"
@@ -183,7 +207,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/secondContainer"
-            android:gravity="center_vertical|center_horizontal">
+            android:gravity="center_horizontal">
             <Button
                 android:id="@+id/mButtonO"
                 android:layout_width="35dp"
@@ -231,7 +255,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/thirdContainer"
-            android:gravity="center_vertical|center_horizontal">
+            android:gravity="center_horizontal">
             <Button
                 android:id="@+id/mButtonV"
                 android:layout_width="35dp"
@@ -264,17 +288,4 @@
                 android:onClick="letterPressed"/>
         </LinearLayout>
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/mGameCountdown"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="10dp"
-        android:textSize="20dp"
-        android:textColor="@color/colorText"
-        android:background="@drawable/roundedbutton"
-        android:text="00"/>
-
-</RelativeLayout>
+</LinearLayout>

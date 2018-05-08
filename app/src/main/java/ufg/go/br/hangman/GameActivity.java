@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,11 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import ufg.go.br.hangman.Util.AttemptResult;
 import ufg.go.br.hangman.Util.SoundGame;
 import ufg.go.br.hangman.Util.VibrationGame;
-import ufg.go.br.hangman.Util.WordManager;
 import ufg.go.br.hangman.model.DictionaryItem;
 import static android.content.ContentValues.TAG;
 import ufg.go.br.hangman.Util.GameManager;
@@ -43,10 +44,11 @@ public class GameActivity extends AppCompatActivity {
     TextView mWord;
     TextView mMeaning;
     TextView mCategoryLabel;
-    Button mNewGameButton;
+    LinearLayout mEndGameContainer;
     LinearLayout mLettersContainer;
     SoundGame sg;
     VibrationGame vg;
+    ImageView mClockImage;
     TextView mGameCountdown;
     GameManager mGameManager;
 
@@ -103,7 +105,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void newGame() {
-
+        mEndGameContainer.setVisibility(View.GONE);
 
         database.getReference("portuguese").child("words").child(category).addValueEventListener(new ValueEventListener() {
             @Override
@@ -131,7 +133,7 @@ public class GameActivity extends AppCompatActivity {
         guess = mGameManager.getNewWordMasked();
 
         mWord.setText(String.valueOf(guess));
-        mNewGameButton.setVisibility(View.GONE);
+        mLettersContainer.setVisibility(View.VISIBLE);
 
         sg = new SoundGame(GameActivity.this);
         vg = new VibrationGame(GameActivity.this);
@@ -171,15 +173,15 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void updateScreenOfGameOver(){
-        mNewGameButton.setVisibility(View.VISIBLE);
+        mEndGameContainer.setVisibility(View.VISIBLE);
         mLettersContainer.setVisibility(View.GONE);
+        mClockImage.setVisibility(View.GONE);
         mGameCountdown.setVisibility(View.GONE);
         countDownTimer.cancel();
         sg.stopMusicBehind();
         setHangDraw();
         mWord.setText(mGameManager.getWordToBeGuessed());
         mMeaning.setText(getString(R.string.meaning) + " " + mGameManager.getMeaning());
-        mMeaning.setVisibility(View.VISIBLE);
     }
 
     private void updateGameHistory(long seconds){
@@ -235,13 +237,13 @@ public class GameActivity extends AppCompatActivity {
         mWord = findViewById(R.id.mWord);
         mMeaning = findViewById(R.id.mMeaning);
         mCategoryLabel = findViewById(R.id.mCategoryLabel);
-        mNewGameButton = findViewById(R.id.mNewGameButton);
+        mEndGameContainer = findViewById(R.id.mEndGameContainer);
         mLettersContainer = findViewById(R.id.mLettersContainer);
+        mClockImage = findViewById(R.id.mClockImage);
         mGameCountdown = findViewById(R.id.mGameCountdown);
         category = getIntent().getStringExtra(getString(R.string.category));
         timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
         mCategoryLabel.setText(category);
-
     }
 
     private void removeButton(Button letterButton){
