@@ -1,6 +1,7 @@
 package ufg.go.br.hangman;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -42,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
 
         setStartValues();
     }
+
+
+    @Override
+    public void onBackPressed() {
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("welcome", android.content.Context.MODE_PRIVATE);
+        boolean screen = preferences.getBoolean("screen", false);
+        if(screen==true){
+            this.finishAffinity();
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
