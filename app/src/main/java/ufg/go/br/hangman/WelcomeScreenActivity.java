@@ -31,7 +31,18 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_screen);
+
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("welcome", android.content.Context.MODE_PRIVATE);
+
+        boolean screen = preferences.getBoolean("screen", false);
+        if(screen==false) {
+
+            setContentView(R.layout.activity_screen);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("screen", true);
+            editor.commit();
+
 
         mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         mLayout = (LinearLayout) findViewById(R.id.mLayout);
@@ -65,6 +76,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
                 mSlideViewPager.setCurrentItem(mCurrentPage - 1);
             }
         });
+
+        }
+        else{
+            Intent myIntent = new Intent(WelcomeScreenActivity.this, MainActivity.class);
+            WelcomeScreenActivity.this.startActivity(myIntent);
+        }
+
     }
 
     public void addPaginacao(int position){
