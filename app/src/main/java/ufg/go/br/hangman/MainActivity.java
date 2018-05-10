@@ -1,6 +1,7 @@
 package ufg.go.br.hangman;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -43,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
         setStartValues();
     }
 
+
+    @Override
+    public void onBackPressed() {
+
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("welcome", android.content.Context.MODE_PRIVATE);
+        boolean screen = preferences.getBoolean("screen", false);
+        if(screen==true){
+            this.finishAffinity();
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -57,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void setPageSettings(View v) {
+        Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
 
     public void nextCategory(View v) {
         if (selectedCategory == categories.size() - 1) {

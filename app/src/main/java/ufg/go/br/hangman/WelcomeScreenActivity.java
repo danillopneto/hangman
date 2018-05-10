@@ -31,24 +31,17 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_screen);
 
-        // Armazenando dados inciais da configuração
 
-        SharedPreferences preferences = getSharedPreferences("settings", Context.MODE_PRIVATE);
-        SharedPreferences.Editor ed  = preferences.edit();
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("welcome", android.content.Context.MODE_PRIVATE);
 
-        if(!preferences.getBoolean("switchvibrate", false)){
-            ed.putBoolean("switchvibrate", false);
-        }
+        boolean screen = preferences.getBoolean("screen", false);
+        if(screen==false) {
 
-        if(!preferences.getBoolean("switchsound", false)){
-            ed.putBoolean("switchsound", false);
-        }
-
-        if(!preferences.getBoolean("switchreveal", false)){
-            ed.putBoolean("switchreveal", false);
-        }
+            setContentView(R.layout.activity_screen);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("screen", true);
+            editor.commit();
 
 
         mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
@@ -83,6 +76,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
                 mSlideViewPager.setCurrentItem(mCurrentPage - 1);
             }
         });
+
+        }
+        else{
+            Intent myIntent = new Intent(WelcomeScreenActivity.this, MainActivity.class);
+            WelcomeScreenActivity.this.startActivity(myIntent);
+        }
+
     }
 
     public void addPaginacao(int position){

@@ -27,6 +27,11 @@ public class SoundGame {
     public void playMusicButton(){
         mpButton = MediaPlayer.create(context, R.raw.facebook);
         mpButton.start();
+        mpButton.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            public void onCompletion(MediaPlayer mp) {
+                mp.release();
+            };
+        });
     }
 
     public void stopMusicBehind() {
