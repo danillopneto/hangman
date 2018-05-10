@@ -37,8 +37,6 @@ public class GameHistoryActivity extends AppCompatActivity {
         GameHistoryDbHelper dbHelper = new GameHistoryDbHelper(this);
         dbHelper.deleteAllGameHistory();
 
-        Intent intent = getIntent();
-        finish();
-        startActivity(intent);
+        recreate();
     }
 }
