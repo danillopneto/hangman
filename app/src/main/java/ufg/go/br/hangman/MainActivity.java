@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 selectedCategory = 0;
-                mCategoryLabel.setText(categories.get(selectedCategory));
+                mCategoryLabel.setText(categories.get(selectedCategory).toUpperCase());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
