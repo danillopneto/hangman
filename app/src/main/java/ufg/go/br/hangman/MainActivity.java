@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 categories = new ArrayList<>();
                 for (DataSnapshot adSnapshot: dataSnapshot.getChildren()) {
-                    categories.add(adSnapshot.getValue(String.class).toUpperCase());
+                    categories.add(adSnapshot.getValue(String.class));
                 }
 
                 selectedCategory = 0;
