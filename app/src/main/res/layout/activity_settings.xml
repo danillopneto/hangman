@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="wrap_content"
-    android:background="@mipmap/main_background"
+    android:background="@mipmap/background"
     android:padding="10dp">
 
 
@@ -20,38 +20,8 @@
 
 
     <LinearLayout
-        android:id="@+id/containerImagem"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_below="@+id/textView"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textCateg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/swap_imagem"
-            android:textColor="@color/white"
-            android:textSize="20dp" />
-
-
-        <ImageView
-            android:id="@+id/mHangImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="5dp"
-            app:srcCompat="@mipmap/camera_icon"
-            />
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
         android:id="@+id/mLettersContainer"
-        android:layout_below="@+id/containerImagem"
+        android:layout_below="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
