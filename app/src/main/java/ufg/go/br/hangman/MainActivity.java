@@ -120,8 +120,10 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(View v) {
         Intent i = new Intent(this, GameActivity.class);
         i.putExtra(getString(R.string.category), categories.get(selectedCategory));
-        i.putExtra(getString(R.string.total_time), levels.get(selectedLevel).getTime());
+        i.putExtra(getString(R.string.total_time),levels.get(selectedLevel).getTime());
+        i.putExtra("level", levels.get(selectedLevel).getName());
         startActivity(i);
+        //
     }
 
     public void openGameHistory(View v){

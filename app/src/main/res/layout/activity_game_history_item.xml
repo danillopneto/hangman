@@ -1,69 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_marginBottom="2dp"
+    android:orientation="vertical"
+    android:paddingBottom="2dp">
 
     <TextView
         android:id="@+id/game_history_word"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:width="200dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="16dp"
         android:text="word"
-        android:textAlignment="center"
-        android:textSize="30dp" />
+        android:textAlignment="textStart"
+        android:textSize="21dp" />
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp">
+            android:paddingBottom="2dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="2dp">
 
             <TextView
                 android:id="@+id/label_game_history_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nível: "
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/game_history_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="level"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp">
+            android:paddingBottom="2dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="2dp">
 
             <TextView
                 android:id="@+id/label_game_history_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tempo: "
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/game_history_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="time"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

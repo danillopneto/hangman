@@ -35,6 +35,8 @@ import ufg.go.br.hangman.model.GameHistory;
 public class GameActivity extends AppCompatActivity {
     private int timeLimit;
     private String category;
+    private String levelName;
+
     FirebaseDatabase database;
     CountDownTimer countDownTimer;
     List<DictionaryItem> dictionary;
@@ -190,7 +192,7 @@ public class GameActivity extends AppCompatActivity {
             GameHistory gameHistory = new GameHistory();
             gameHistory.setWord(mGameManager.getWordToBeGuessed());
             gameHistory.setTime(mGameManager.getCurrentTime());
-            gameHistory.setLevel("Fácil");
+            gameHistory.setLevel(levelName);
 
             GameHistoryDbHelper gameHistoryDbHelper = new GameHistoryDbHelper(getBaseContext());
             gameHistoryDbHelper.createGameHistory(gameHistory);
@@ -243,6 +245,7 @@ public class GameActivity extends AppCompatActivity {
         mGameCountdown = findViewById(R.id.mGameCountdown);
         category = getIntent().getStringExtra(getString(R.string.category));
         timeLimit = getIntent().getIntExtra(getString(R.string.total_time), 0);
+        levelName = getIntent().getStringExtra("level");
         mCategoryLabel.setText(category);
     }
 
