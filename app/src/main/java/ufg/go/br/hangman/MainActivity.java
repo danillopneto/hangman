@@ -71,12 +71,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void setPageSettings(View v) {
-        Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
-        MainActivity.this.startActivity(myIntent);
-    }
-
-
     public void nextCategory(View v) {
         if (selectedCategory == categories.size() - 1) {
             selectedCategory = 0;
@@ -84,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             selectedCategory++;
         }
 
-        mCategoryLabel.setText(categories.get(selectedCategory));
+        mCategoryLabel.setText(categories.get(selectedCategory).toUpperCase());
     }
 
     public void nextLevel(View v) {
@@ -94,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             selectedLevel++;
         }
 
-        mLevelLabel.setText(levels.get(selectedLevel).getName());
+        mLevelLabel.setText(levels.get(selectedLevel).getName().toUpperCase());
     }
 
     public void previousCategory(View v) {
@@ -104,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             selectedCategory--;
         }
 
-        mCategoryLabel.setText(categories.get(selectedCategory));
+        mCategoryLabel.setText(categories.get(selectedCategory).toUpperCase());
     }
 
     public void previousLevel(View v) {
@@ -114,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
             selectedLevel--;
         }
 
-        mLevelLabel.setText(levels.get(selectedLevel).getName());
+        mLevelLabel.setText(levels.get(selectedLevel).getName().toUpperCase());
     }
 
     public void startGame(View v) {
@@ -146,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 categories = new ArrayList<>();
                 for (DataSnapshot adSnapshot: dataSnapshot.getChildren()) {
-                    categories.add(adSnapshot.getValue(String.class));
+                    categories.add(adSnapshot.getValue(String.class).toUpperCase());
                 }
 
                 selectedCategory = 0;
@@ -167,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 selectedLevel = 0;
-                mLevelLabel.setText(levels.get(selectedLevel).getName());
+                mLevelLabel.setText(levels.get(selectedLevel).getName().toUpperCase());
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
