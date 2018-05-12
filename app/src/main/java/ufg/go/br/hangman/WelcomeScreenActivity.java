@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import ufg.go.br.hangman.Util.SoundGame;
+import ufg.go.br.hangman.Util.VibrationGame;
 import ufg.go.br.hangman.adapter.SliderAdapter;
 
 public class WelcomeScreenActivity extends AppCompatActivity {
@@ -24,6 +26,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     private ImageButton mNextButton;
     private ImageButton mPreviousButton;
     private int mCurrentPage;
+    SoundGame sg;
+    VibrationGame vg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +36,23 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("welcome", android.content.Context.MODE_PRIVATE);
 
+
+
+
+
+
         boolean screen = preferences.getBoolean("screen", false);
         if(screen==false) {
+
+            sg = new SoundGame(WelcomeScreenActivity.this);
+            vg = new VibrationGame(WelcomeScreenActivity.this);
+
+            SharedPreferences interacoes = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
+            interacoes.getBoolean("switchsound", true);
+            interacoes.getBoolean("switchvibrate", true);
+            interacoes.getBoolean("switchreveal", true);
+
+
 
             setContentView(R.layout.activity_screen);
             SharedPreferences.Editor editor = preferences.edit();
@@ -57,6 +76,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                sg.playMusicButton();
+                vg.startVibrateBehind();
                 if(mCurrentPage == 1){
                     Intent myIntent = new Intent(WelcomeScreenActivity.this, MainActivity.class);
                     WelcomeScreenActivity.this.startActivity(myIntent);
@@ -70,6 +91,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                sg.playMusicButton();
+                vg.startVibrateBehind();
                 mSlideViewPager.setCurrentItem(mCurrentPage - 1);
             }
         });
