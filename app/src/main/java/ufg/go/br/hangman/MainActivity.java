@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ufg.go.br.hangman.Util.SoundGame;
+import ufg.go.br.hangman.Util.VibrationGame;
 import ufg.go.br.hangman.model.GameLevel;
 import ufg.go.br.hangman.services.WordsService;
 
@@ -33,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     List<String> categories;
     int selectedCategory;
     int selectedLevel;
+    SoundGame sg;
+    VibrationGame vg;
+    SharedPreferences interacoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +47,17 @@ public class MainActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         database.setPersistenceEnabled(true);
 
+        sg = new SoundGame(MainActivity.this);
+        vg = new VibrationGame(MainActivity.this);
+
         setStartValues();
     }
 
 
     @Override
     public void onBackPressed() {
-
+        getInteration();
+        SharedPreferences interacoes = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("welcome", android.content.Context.MODE_PRIVATE);
         boolean screen = preferences.getBoolean("screen", false);
         if(screen==true){
@@ -58,12 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getInteration();
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        getInteration();
         if (item.getItemId() == R.id.mSettingButton) {
             showSettings();
         }
@@ -72,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextCategory(View v) {
+        getInteration();
         if (selectedCategory == categories.size() - 1) {
             selectedCategory = 0;
         } else {
@@ -82,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextLevel(View v) {
+        getInteration();
         if (selectedLevel == levels.size() - 1) {
             selectedLevel = 0;
         } else {
@@ -92,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void previousCategory(View v) {
+        getInteration();
         if (selectedCategory == 0) {
             selectedCategory = categories.size() - 1;
         } else {
@@ -102,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void previousLevel(View v) {
+        getInteration();
         if (selectedLevel == 0) {
             selectedLevel = levels.size() - 1;
         } else {
@@ -112,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startGame(View v) {
+        getInteration();
         Intent i = new Intent(this, GameActivity.class);
         i.putExtra(getString(R.string.category), categories.get(selectedCategory));
         i.putExtra(getString(R.string.total_time),levels.get(selectedLevel).getTime());
@@ -121,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openGameHistory(View v){
+        getInteration();
         Intent i =new Intent(this, GameHistoryActivity.class);
         startActivity(i);
     }
@@ -169,4 +187,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private void getInteration(){
+        interacoes = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
+        boolean audio = interacoes.getBoolean("switchsound", false);
+        boolean vibration = interacoes.getBoolean("switchvibrate", false);
+
+        if(audio==true) {
+            sg.playMusicButton();
+        }
+        if(vibration==true) {
+            vg.startVibrateBehind();
+        }
+    }
+
+
 }
