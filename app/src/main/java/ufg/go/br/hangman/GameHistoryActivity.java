@@ -1,6 +1,7 @@
 package ufg.go.br.hangman;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,8 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import ufg.go.br.hangman.Util.SoundGame;
+import ufg.go.br.hangman.Util.VibrationGame;
 import ufg.go.br.hangman.adapter.GameHistoryAdapter;
 import ufg.go.br.hangman.db.GameHistoryDbHelper;
 import ufg.go.br.hangman.model.GameHistory;
@@ -20,6 +23,10 @@ import ufg.go.br.hangman.model.GameHistory;
  */
 
 public class GameHistoryActivity extends AppCompatActivity {
+
+    SoundGame sg;
+    VibrationGame vg;
+    SharedPreferences interacoes;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +41,18 @@ public class GameHistoryActivity extends AppCompatActivity {
     }
 
     public void clearRecords(View v){
+        sg = new SoundGame(GameHistoryActivity.this);
+        vg = new VibrationGame(GameHistoryActivity.this);
+        interacoes = getApplicationContext().getSharedPreferences("settings", android.content.Context.MODE_PRIVATE);
+        boolean audio = interacoes.getBoolean("switchsound", false);
+        boolean vibration = interacoes.getBoolean("switchvibrate", false);
+
+        if(audio==true) {
+            sg.playMusicButton();
+        }
+        if(vibration==true) {
+            vg.startVibrateBehind();
+        }
         GameHistoryDbHelper dbHelper = new GameHistoryDbHelper(this);
         dbHelper.deleteAllGameHistory();
 
