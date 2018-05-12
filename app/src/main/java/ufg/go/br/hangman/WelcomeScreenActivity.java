@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -20,13 +21,9 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     private LinearLayout mLayout;
     private TextView[] mDots;
     private SliderAdapter sliderAdapter;
-    private Button mNextButton;
-    private Button mPreviousButton;
+    private ImageButton mNextButton;
+    private ImageButton mPreviousButton;
     private int mCurrentPage;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +44,8 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
         mLayout = (LinearLayout) findViewById(R.id.mLayout);
 
-        mNextButton = (Button) findViewById(R.id.nextButton);
-        mPreviousButton = (Button) findViewById(R.id.previousButton);
+        mNextButton =  findViewById(R.id.nextButton);
+        mPreviousButton = findViewById(R.id.previousButton);
 
         sliderAdapter = new SliderAdapter(this);
         mSlideViewPager.setAdapter(sliderAdapter);
@@ -82,7 +79,6 @@ public class WelcomeScreenActivity extends AppCompatActivity {
             Intent myIntent = new Intent(WelcomeScreenActivity.this, MainActivity.class);
             WelcomeScreenActivity.this.startActivity(myIntent);
         }
-
     }
 
     public void addPaginacao(int position){
@@ -116,17 +112,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
 
             mCurrentPage = position;
             if(position == 0){
-                mNextButton.setText("Próximo");
 
                 mPreviousButton.setEnabled(false);
                 mPreviousButton.setVisibility(View.INVISIBLE);
-                mPreviousButton.setText("");
             } else{
-                mNextButton.setText("Pular");
 
                 mPreviousButton.setEnabled(true);
                 mPreviousButton.setVisibility(View.VISIBLE);
-                mPreviousButton.setText("Voltar");
             }
         }
 

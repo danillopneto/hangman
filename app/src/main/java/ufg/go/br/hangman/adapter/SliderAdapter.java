@@ -26,18 +26,18 @@ public class SliderAdapter extends PagerAdapter {
     }
 
     public int[] slide_images = {
-        R.mipmap.icon_hangman,
-        R.mipmap.camera_icon
+        R.mipmap.normal,
+        R.mipmap.dead
     };
 
     public String[] slide_headings ={
-        "Mais um game de forca",
-        "Envio da foto"
+        "DESAFIOS:",
+        "Que a FORCA esteja com você!!"
     };
 
     public String[] slide_descs = {
-        "A cada jogo, escolha o NÍVEL DO GAME e selecione uma CATEGORIA. Mas antes..",
-        "Faça upload da foto de rosto a ser exibida na forca"
+        "Responda dentro do tempo antes que você seja enforcado!! Prove que você não é NOOB!",
+        ""
     };
 
     @Override
