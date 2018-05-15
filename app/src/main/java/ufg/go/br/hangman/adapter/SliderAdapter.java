@@ -18,8 +18,8 @@ import ufg.go.br.hangman.R;
 
 public class SliderAdapter extends PagerAdapter {
 
-    Context context;
-    LayoutInflater layoutInflater;
+    private Context context;
+    private LayoutInflater layoutInflater;
 
     public SliderAdapter(Context context) {
         this.context = context;
@@ -30,19 +30,9 @@ public class SliderAdapter extends PagerAdapter {
         R.mipmap.dead
     };
 
-    public String[] slide_headings ={
-        "DESAFIOS:",
-        "Que a FORCA esteja com você!!"
-    };
-
-    public String[] slide_descs = {
-        "Responda dentro do tempo antes que você seja enforcado!! Prove que você não é NOOB!",
-        ""
-    };
-
     @Override
     public int getCount() {
-        return slide_headings.length;
+        return getSlideHeadings().length;
     }
 
     @Override
@@ -61,8 +51,8 @@ public class SliderAdapter extends PagerAdapter {
         TextView slideDescription = (TextView) view.findViewById(R.id.slide_desc);
 
         slideImageView.setImageResource(slide_images[position]);
-        slideHeading.setText(slide_headings[position]);
-        slideDescription.setText(slide_descs[position]);
+        slideHeading.setText(getSlideHeadings()[position]);
+        slideDescription.setText(getSlideDescs()[position]);
 
         container.addView(view);
 
@@ -72,5 +62,23 @@ public class SliderAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((RelativeLayout)object);
+    }
+
+    private Context getContext(){
+        return this.context;
+    }
+
+    private String[] getSlideDescs(){
+        return new String[]{
+                getContext().getResources().getString(R.string.ProofYouAreNotNoob),
+                ""
+        };
+    }
+
+    private String[] getSlideHeadings(){
+        return new String[]{
+                getContext().getString(R.string.challenge),
+                getContext().getResources().getString(R.string.forcaComVoce)
+        };
     }
 }

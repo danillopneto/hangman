@@ -16,4 +16,15 @@
     <string name="history">Histórico</string>
     <string name="word">Palavra</string>
     <string name="previuosIcon"><![CDATA[<]]></string>
+    <string name="heading">HEADING</string>
+    <string name="loremIpsum">Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos</string>
+    <string name="recordes">Recordes</string>
+    <string name="limpar">Limpar</string>
+    <string name="level">level</string>
+    <string name="nivel">Nível: </string>
+    <string name="tempo">Tempo: </string>
+    <string name="challenge">DESAFIOS:</string>
+    <string name="forcaComVoce">Que a FORCA esteja com você!!</string>
+    <string name="ProofYouAreNotNoob">"Responda dentro do tempo antes que você seja enforcado!! Prove que você não é NOOB!"</string>
+
 </resources>

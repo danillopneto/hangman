@@ -20,7 +20,7 @@
         android:layout_below="@+id/slide_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="HEADING"
+        android:text="@string/heading"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -33,7 +33,7 @@
         android:layout_below="@+id/slide_heading"
         android:layout_marginTop="10dp"
         android:padding="35dp"
-        android:text="Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI, quando um impressor desconhecido pegou uma bandeja de tipos e os embaralhou para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não só a cinco séculos,"
+        android:text="@string/loremIpsum"
         android:textAlignment="center"
         android:textColor="#ABA9B2"
         android:textSize="18sp" />

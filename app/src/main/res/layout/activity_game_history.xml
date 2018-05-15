@@ -16,7 +16,7 @@
             android:layout_marginTop="8dp"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
-            android:text="Recordes"
+            android:text="@string/recordes"
             android:textAlignment="textStart"
             android:textSize="20dp" />
 
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/roundedbutton"
             android:onClick="clearRecords"
-            android:text="Limpar"
+            android:text="@string/limpar"
             android:textColor="@color/colorText" />
 
     </LinearLayout>
